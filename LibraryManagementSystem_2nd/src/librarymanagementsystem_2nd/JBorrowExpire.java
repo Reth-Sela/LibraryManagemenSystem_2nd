@@ -3,36 +3,75 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package librarymanagementsystem_2nd;
-//import javax.swing.JFrame;
-//import javax.swing.JObtionPane;
-import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
-//import java.sql.ResultSetMetaData;
-//import java.sql.SQLException;
-//import javax.swing.JTable;
-//import javax.swing.table.DefaultTableModel;
-//import java.text.DateFormat;
-//import java.text.MessageFormat;
-//import java.text.SimpleDateFormat;
-//import java.util.Vector;
 import java.sql.Connection;
-//import java.sql.DriverManager;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-//import java.sql.Statement;
-//import java.sql.SQLException;
-
 /**
  *
  * @author Setthi
  */
 public class JBorrowExpire extends javax.swing.JFrame {
+    // Method to establish database connection
+    private Connection connectDB() {
+        Connection conn = null;
+        try {
+            // Register JDBC driver
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            
+            // Database URL
+            String url = "jdbc:sqlserver://DESKTOP-B352R9T;databaseName=library";
+            // Database credentials (replace 'your_username' and 'your_password' with your actual credentials)
+            String username = "your_username";
+            String password = "your_password";
+            
+            // Establish connection
+            conn = DriverManager.getConnection(url, username, password);
+            
+            System.out.println("Connected to the database successfully!");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("Error connecting to the database: " + e.getMessage());
+        }
+        return conn;
+    }
+    
+    // Method to fetch data from the database based on BorrowID and populate text fields
+    private void fetchDataFromDB(String borrowID) {
+        try {
+            Connection conn = connectDB(); // Establish connection
+            if (conn != null) {
+                // SQL query to fetch data based on BorrowID
+                String query = "SELECT borrowex_id, expired_date, librarian_id FROM borrowed WHERE borrowex_id = ?";
+                
+                // Create PreparedStatement
+                PreparedStatement pst = conn.prepareStatement(query);
+                pst.setString(1, borrowID); // Set BorrowID parameter
+                
+                // Execute query
+                ResultSet rs = pst.executeQuery();
+                if (rs.next()) {
+                    // Populate text fields with fetched data
+                    jtxtBorrowID.setText(rs.getString("borrowex_id"));
+                    jtxtExpiredDate.setText(rs.getString("expired_date"));
+                    jtxtLibrarianID.setText(rs.getString("librarian_id"));
+                } else {
+                    // Borrow ID not found
+                    System.out.println("Borrow ID not found!");
+                }
+                
+                // Close resources
+                rs.close();
+                pst.close();
+                conn.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching data from the database: " + e.getMessage());
+        }
+    }
+
      
-    private static final String DB_URL = "jdbc:sqlserver://DESKTOP-B352R9T:1433;databaseName=library";
-    private static final String USER = "yourUsername"; // Replace with your actual username
-    private static final String PASS = "yourPassword"; // Replace with your actual password
-     Connection conn = null;
-       PreparedStatement pst = null;
-       ResultSet rs = null;
+  
     public JBorrowExpire() {
         initComponents();
     }
@@ -104,6 +143,11 @@ public class JBorrowExpire extends javax.swing.JFrame {
         jbtnDelete.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jbtnDelete.setText("Delete");
         jbtnDelete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jbtnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnDeleteActionPerformed(evt);
+            }
+        });
         jPanel5.add(jbtnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 120, 40));
 
         jbtnNew.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -129,6 +173,11 @@ public class JBorrowExpire extends javax.swing.JFrame {
         jbtnUpdate.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jbtnUpdate.setText("Update");
         jbtnUpdate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jbtnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnUpdateActionPerformed(evt);
+            }
+        });
         jPanel5.add(jbtnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 120, 40));
 
         jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 0, 180, 240));
@@ -178,7 +227,41 @@ public class JBorrowExpire extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnInsertActionPerformed
-        // TODO add your handling code here:
+           try {
+        String borrowID = jtxtBorrowID.getText();
+        String expiredDate = jtxtExpiredDate.getText();
+        String librarianID = jtxtLibrarianID.getText();
+
+        Connection conn = connectDB(); // Establish connection
+        if (conn != null) {
+            // SQL query to insert data into the database
+            String insertQuery = "INSERT INTO borrowed (borrowex_id, expired_date, librarian_id) VALUES (?, ?, ?)";
+            
+            // Create PreparedStatement for insertion
+            PreparedStatement pstInsert = conn.prepareStatement(insertQuery);
+            pstInsert.setString(1, borrowID);
+            pstInsert.setString(2, expiredDate);
+            pstInsert.setString(3, librarianID);
+            
+            // Execute insertion query
+            int rowsInserted = pstInsert.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Data inserted successfully!");
+            } else {
+                System.out.println("Failed to insert data.");
+            }
+            
+            // Close resources
+            pstInsert.close();
+            
+            // Fetch and display the inserted data
+            fetchDataFromDB(borrowID); // Call method to fetch data and populate text fields
+            
+            conn.close(); // Close the connection
+        }
+    } catch (SQLException e) {
+        System.out.println("Error inserting data into the database: " + e.getMessage());
+    }
     }//GEN-LAST:event_jbtnInsertActionPerformed
 
     private void jbtnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNewActionPerformed
@@ -186,6 +269,80 @@ public class JBorrowExpire extends javax.swing.JFrame {
         jtxtExpiredDate.setText("");
         jtxtLibrarianID.setText("");
     }//GEN-LAST:event_jbtnNewActionPerformed
+
+    private void jbtnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnUpdateActionPerformed
+         try {
+        String borrowID = jtxtBorrowID.getText();
+        String expiredDate = jtxtExpiredDate.getText();
+        String librarianID = jtxtLibrarianID.getText();
+
+        Connection conn = connectDB(); // Establish connection
+        if (conn != null) {
+            // SQL query to update data in the database
+            String updateQuery = "UPDATE borrowed SET expired_date = ?, librarian_id = ? WHERE borrowex_id = ?";
+            
+            // Create PreparedStatement for update
+            PreparedStatement pstUpdate = conn.prepareStatement(updateQuery);
+            pstUpdate.setString(1, expiredDate);
+            pstUpdate.setString(2, librarianID);
+            pstUpdate.setString(3, borrowID);
+            
+            // Execute update query
+            int rowsUpdated = pstUpdate.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Data updated successfully!");
+            } else {
+                System.out.println("Failed to update data.");
+            }
+            
+            // Close resources
+            pstUpdate.close();
+            
+            // Fetch and display the updated data
+            fetchDataFromDB(borrowID); // Call method to fetch data and populate text fields
+            
+            conn.close(); // Close the connection
+        }
+    } catch (SQLException e) {
+        System.out.println("Error updating data in the database: " + e.getMessage());
+    }
+    }//GEN-LAST:event_jbtnUpdateActionPerformed
+
+    private void jbtnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDeleteActionPerformed
+        try {
+        String borrowID = jtxtBorrowID.getText();
+
+        Connection conn = connectDB(); // Establish connection
+        if (conn != null) {
+            // SQL query to delete data from the database
+            String deleteQuery = "DELETE FROM borrowed WHERE borrowex_id = ?";
+            
+            // Create PreparedStatement for deletion
+            PreparedStatement pstDelete = conn.prepareStatement(deleteQuery);
+            pstDelete.setString(1, borrowID);
+            
+            // Execute delete query
+            int rowsDeleted = pstDelete.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Data deleted successfully!");
+            } else {
+                System.out.println("Failed to delete data.");
+            }
+            
+            // Close resources
+            pstDelete.close();
+            
+            // Clear text fields after deletion
+            jtxtBorrowID.setText("");
+            jtxtExpiredDate.setText("");
+            jtxtLibrarianID.setText("");
+            
+            conn.close(); // Close the connection
+        }
+    } catch (SQLException e) {
+        System.out.println("Error deleting data from the database: " + e.getMessage());
+    }
+    }//GEN-LAST:event_jbtnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
