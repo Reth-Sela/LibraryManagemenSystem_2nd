@@ -4,6 +4,8 @@
  */
 package librarymanagementsystem_2nd;
 
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +18,11 @@ import java.sql.*;
  */
 public class ReaderForm extends javax.swing.JFrame {
     Connection connection=null;
+    PreparedStatement preparedStatement;
+    String url = "jdbc:sqlserver://LAPTOP-VBAMK3DF\\SQLEXPRESS;databaseName=librarySM;intergratedSecurity=true;encrypt=true;trustServerCertificate=true";
+        String username = "sa";
+        String password = "02062004";
+    
 
     /**
      * Creates new form ReaderForm
@@ -23,7 +30,7 @@ public class ReaderForm extends javax.swing.JFrame {
     public ReaderForm() {
         initComponents();
     }
-
+      
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -33,6 +40,7 @@ public class ReaderForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         idTextField = new javax.swing.JTextField();
@@ -41,6 +49,7 @@ public class ReaderForm extends javax.swing.JFrame {
         nameTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         insertBtn = new javax.swing.JButton();
+        nameInputrequire = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         deleteBtn = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
@@ -49,6 +58,7 @@ public class ReaderForm extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         addressTextField = new javax.swing.JTextField();
+        addressInputRequire = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -59,6 +69,7 @@ public class ReaderForm extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         updateBtn = new javax.swing.JButton();
         phoneTextfield = new javax.swing.JTextField();
+        phoneInputRequire = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Reader's Information");
@@ -115,6 +126,9 @@ public class ReaderForm extends javax.swing.JFrame {
             }
         });
 
+        nameInputrequire.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        nameInputrequire.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -124,7 +138,9 @@ public class ReaderForm extends javax.swing.JFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nameInputrequire, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(insertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
@@ -132,11 +148,16 @@ public class ReaderForm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(insertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(17, 17, 17))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(nameInputrequire, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(insertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(17, 17, 17))))
         );
 
         deleteBtn.setText("Delete");
@@ -149,6 +170,7 @@ public class ReaderForm extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel4.setText("Sex");
 
+        buttonGroup1.add(maleRadioBtn);
         maleRadioBtn.setText("Male");
         maleRadioBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -156,6 +178,7 @@ public class ReaderForm extends javax.swing.JFrame {
             }
         });
 
+        buttonGroup1.add(femaleRadiobtn);
         femaleRadiobtn.setText("Female");
         femaleRadiobtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,7 +197,7 @@ public class ReaderForm extends javax.swing.JFrame {
                 .addComponent(maleRadioBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(femaleRadiobtn, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 335, Short.MAX_VALUE)
                 .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
         );
@@ -193,6 +216,9 @@ public class ReaderForm extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel6.setText("Address");
 
+        addressInputRequire.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        addressInputRequire.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -200,18 +226,25 @@ public class ReaderForm extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(69, 69, 69)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(36, 36, 36)
                 .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addressInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(addressInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(19, 19, 19))))
         );
 
         jLabel9.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
@@ -281,6 +314,9 @@ public class ReaderForm extends javax.swing.JFrame {
             }
         });
 
+        phoneInputRequire.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        phoneInputRequire.setForeground(new java.awt.Color(204, 0, 0));
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -290,7 +326,9 @@ public class ReaderForm extends javax.swing.JFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(phoneTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(phoneInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
@@ -303,6 +341,10 @@ public class ReaderForm extends javax.swing.JFrame {
                     .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(14, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(phoneInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -318,12 +360,11 @@ public class ReaderForm extends javax.swing.JFrame {
                             .addContainerGap())
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(6, 6, 6)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -333,7 +374,7 @@ public class ReaderForm extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -362,6 +403,7 @@ public class ReaderForm extends javax.swing.JFrame {
         addressTextField.setText(none);
         maleRadioBtn.setSelected(false);
         femaleRadiobtn.setSelected(false);
+        nameInputrequire.setText("");
 
     }//GEN-LAST:event_newBtnActionPerformed
 
@@ -388,17 +430,100 @@ public class ReaderForm extends javax.swing.JFrame {
     private void insertBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertBtnActionPerformed
         // TODO add your handling code here:
          // Database credentials
-        String url = "jdbc:sqlserver://LAPTOP-VBAMK3DF\\DBS;databaseName=libraryManagementSystem;intergratedSecurity=true";
-        String username = "sa";
-        String password = "02062004";
+        
         
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            //JOptionPane.showMessageDialog(rootPane,"Load success");
-            Connection connection=DriverManager.getConnection(url,username,password);
-          
-          JOptionPane.showMessageDialog(rootPane,"Connected");
             
+            //JOptionPane.showMessageDialog(rootPane,"Load success");
+             connection=DriverManager.getConnection(url,username,password);
+            
+             //JOptionPane.showMessageDialog(rootPane,"Successfully joy ery");
+        
+             String readerName=nameTextField.getText();
+             String sex="";
+             String address=addressTextField.getText();
+             String phoneNumber=phoneTextfield.getText();
+             
+             
+             //exception with nametextField input
+            if(readerName.isEmpty()){
+                nameTextField.requestFocus();
+                nameInputrequire.setText("*");
+            }
+              if (readerName.matches(".*\\d.*")) {
+            JOptionPane.showMessageDialog(null, "Reader name cannot contain numbers", "Input Error", JOptionPane.ERROR_MESSAGE);
+            nameTextField.setText("");
+            nameTextField.requestFocus();
+            return; // Exit the method
+            }
+            if(!readerName.contains(" ")){
+                   nameInputrequire.setText("lastName required *");
+                   nameTextField.setText("");
+                   nameTextField.requestFocus();
+              
+               }
+             if(!readerName.isEmpty()){
+                nameInputrequire.setText("");
+            }
+            
+            
+
+            //RadioException
+            
+             if(maleRadioBtn.isSelected()){
+               sex="male";
+             }
+             else if(femaleRadiobtn.isSelected()){
+               sex="female";
+             }
+             
+             
+             if(sex.isEmpty()){
+                 JOptionPane.showMessageDialog(rootPane, "None select sex!","OOp!", JOptionPane.ERROR_MESSAGE);
+             }
+             
+             //Phone exception
+             
+            if(phoneNumber.isEmpty()){
+                phoneTextfield.requestFocus();
+                phoneInputRequire.setText("*");
+            }
+            if(!phoneNumber.isEmpty()){
+                phoneInputRequire.setText("");
+            }
+            
+            
+            //Address exception
+            if(address.isEmpty()){
+                addressTextField.requestFocus();
+                addressInputRequire.setText("*");
+            }
+            if(!address.isEmpty()){
+                addressInputRequire.setText("");
+            }
+            
+                 
+             
+//             System.out.println(readerName);
+//             System.out.println(sex);
+//             System.out.println(phoneNumber);
+//             System.out.println(address);
+            //System.err.println(sex);
+             
+             String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
+             preparedStatement =connection.prepareStatement(query);
+             preparedStatement.setString(1,readerName);
+              preparedStatement.setString(2,sex);
+               preparedStatement.setString(3,address);
+                preparedStatement.setString(4,phoneNumber);
+               int inserted=preparedStatement.executeUpdate();
+               if(inserted>0){
+                   JOptionPane.showMessageDialog(rootPane,"Done!");
+                   
+               }
+               else
+                   JOptionPane.showConfirmDialog(rootPane,"Error occur!");
+                
         } catch (Exception ex) {
             Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -442,7 +567,9 @@ public class ReaderForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel addressInputRequire;
     private javax.swing.JTextField addressTextField;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JRadioButton femaleRadiobtn;
     private javax.swing.JTextField idTextField;
@@ -453,26 +580,22 @@ public class ReaderForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JRadioButton maleRadioBtn;
+    private javax.swing.JLabel nameInputrequire;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JButton newBtn;
+    private javax.swing.JLabel phoneInputRequire;
     private javax.swing.JTextField phoneTextfield;
-    private javax.swing.JTextField searchTextfield;
     private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }
