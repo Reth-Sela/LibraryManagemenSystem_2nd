@@ -3,16 +3,36 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package librarymanagementsystem_2nd;
+//import javax.swing.JFrame;
+//import javax.swing.JObtionPane;
+import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
+//import java.sql.ResultSetMetaData;
+//import java.sql.SQLException;
+//import javax.swing.JTable;
+//import javax.swing.table.DefaultTableModel;
+//import java.text.DateFormat;
+//import java.text.MessageFormat;
+//import java.text.SimpleDateFormat;
+//import java.util.Vector;
+import java.sql.Connection;
+//import java.sql.DriverManager;
+import java.sql.ResultSet;
+//import java.sql.Statement;
+//import java.sql.SQLException;
 
 /**
  *
  * @author Setthi
  */
 public class JBorrowExpire extends javax.swing.JFrame {
-
-    /**
-     * Creates new form JBorrowExpire
-     */
+     
+    private static final String DB_URL = "jdbc:sqlserver://DESKTOP-B352R9T:1433;databaseName=library";
+    private static final String USER = "yourUsername"; // Replace with your actual username
+    private static final String PASS = "yourPassword"; // Replace with your actual password
+     Connection conn = null;
+       PreparedStatement pst = null;
+       ResultSet rs = null;
     public JBorrowExpire() {
         initComponents();
     }
@@ -26,21 +46,146 @@ public class JBorrowExpire extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jtxtLibrarianID = new javax.swing.JTextField();
+        jtxtBorrowID = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jtxtExpiredDate = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jbtnDelete = new javax.swing.JButton();
+        jbtnNew = new javax.swing.JButton();
+        jbtnInsert = new javax.swing.JButton();
+        jbtnUpdate = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jtxtSearch = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel2.setText("LibrarianID");
+        jPanel4.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 150, -1, -1));
+
+        jtxtLibrarianID.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jPanel4.add(jtxtLibrarianID, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 430, 30));
+
+        jtxtBorrowID.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jPanel4.add(jtxtBorrowID, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, 430, 30));
+
+        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel3.setText("BorrowID");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 50, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel4.setText("ExpiredDate");
+        jPanel4.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, -1, -1));
+
+        jtxtExpiredDate.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jPanel4.add(jtxtExpiredDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, 430, 30));
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jbtnDelete.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jbtnDelete.setText("Delete");
+        jbtnDelete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jPanel5.add(jbtnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 120, 40));
+
+        jbtnNew.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jbtnNew.setText("New");
+        jbtnNew.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jbtnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnNewActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jbtnNew, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 40));
+
+        jbtnInsert.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jbtnInsert.setText("Insert");
+        jbtnInsert.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jbtnInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnInsertActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jbtnInsert, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 120, 40));
+
+        jbtnUpdate.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jbtnUpdate.setText("Update");
+        jbtnUpdate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jPanel5.add(jbtnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 120, 40));
+
+        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 0, 180, 240));
+
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 980, 240));
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel1.setText("BorrowExpire's Information");
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 10, 340, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 940, 50));
+
+        jtxtSearch.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jPanel1.add(jtxtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 330, 440, 50));
+
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 3, 36)); // NOI18N
+        jLabel5.setText("Search");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 330, -1, -1));
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(95, 158, 160), 8));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "BorrowID", "ExpiredDate", "LibrarianID"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 960, 370));
+
+        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 980, 390));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 980, 780));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jbtnInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnInsertActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtnInsertActionPerformed
+
+    private void jbtnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnNewActionPerformed
+        jtxtBorrowID.setText("");
+        jtxtExpiredDate.setText("");
+        jtxtLibrarianID.setText("");
+    }//GEN-LAST:event_jbtnNewActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +223,25 @@ public class JBorrowExpire extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JButton jbtnDelete;
+    private javax.swing.JButton jbtnInsert;
+    private javax.swing.JButton jbtnNew;
+    private javax.swing.JButton jbtnUpdate;
+    private javax.swing.JTextField jtxtBorrowID;
+    private javax.swing.JTextField jtxtExpiredDate;
+    private javax.swing.JTextField jtxtLibrarianID;
+    private javax.swing.JTextField jtxtSearch;
     // End of variables declaration//GEN-END:variables
 }
