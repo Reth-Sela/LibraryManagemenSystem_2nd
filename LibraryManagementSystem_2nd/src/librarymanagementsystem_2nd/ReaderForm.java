@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,9 +20,13 @@ import java.sql.*;
 public class ReaderForm extends javax.swing.JFrame {
     Connection connection=null;
     PreparedStatement preparedStatement;
+    ResultSet resultSet;
+    Statement statement;
     String url = "jdbc:sqlserver://LAPTOP-VBAMK3DF\\SQLEXPRESS;databaseName=librarySM;intergratedSecurity=true;encrypt=true;trustServerCertificate=true";
         String username = "sa";
         String password = "02062004";
+        
+       DefaultTableModel model;
     
 
     /**
@@ -29,7 +34,43 @@ public class ReaderForm extends javax.swing.JFrame {
      */
     public ReaderForm() {
         initComponents();
+        table();
     }
+     private static boolean isValidPhoneNumber(String phoneNumber) {
+        // Regular expression for a valid phone number format (adjust as per your requirements)
+        String regex = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$";
+        return phoneNumber.matches(regex);
+    }
+     
+     // add all data to put at the table 
+     
+     private  void table(){
+        try {
+            connection=DriverManager.getConnection(url,username,password);
+            model=(DefaultTableModel) jTable.getModel();
+            statement =connection.createStatement();
+            String query="select * from tbReader order by readerID";
+            resultSet=statement.executeQuery(query);
+            while(resultSet.next()){
+              int id=resultSet.getInt("readerID");
+              String name=resultSet.getString("readerName");
+              String sex=resultSet.getString("sex");
+              String address=resultSet.getString("Address");
+              String phone=resultSet.getString("phoneNumber");
+            // System.out.println(id+name+sex+address+phone);
+              
+              Object[] string={id,name,sex,address,phone};
+             model.addRow(string);
+                      
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         
+     }
+     
       
     /**
      * This method is called from within the constructor to initialize the form.
@@ -64,7 +105,7 @@ public class ReaderForm extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         updateBtn = new javax.swing.JButton();
@@ -115,6 +156,8 @@ public class ReaderForm extends javax.swing.JFrame {
                     .addComponent(jLabel1))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
+
+        nameTextField.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel3.setText("Name");
@@ -216,6 +259,8 @@ public class ReaderForm extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
         jLabel6.setText("Address");
 
+        addressTextField.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+
         addressInputRequire.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         addressInputRequire.setForeground(new java.awt.Color(255, 0, 0));
 
@@ -259,18 +304,23 @@ public class ReaderForm extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Name", "Sex", "Phone", "Address"
+                "ID", "Name", "Sex", "Address", "Phone"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
+        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable);
+        if (jTable.getColumnModel().getColumnCount() > 0) {
+            jTable.getColumnModel().getColumn(4).setResizable(false);
         }
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -313,6 +363,8 @@ public class ReaderForm extends javax.swing.JFrame {
                 updateBtnActionPerformed(evt);
             }
         });
+
+        phoneTextfield.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         phoneInputRequire.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         phoneInputRequire.setForeground(new java.awt.Color(204, 0, 0));
@@ -409,6 +461,54 @@ public class ReaderForm extends javax.swing.JFrame {
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // TODO add your handling code here:
+      // Ensure model is correctly set to the table's model
+    model = (DefaultTableModel) jTable.getModel();
+
+    // Check if a row is selected
+    int selectedRow = jTable.getSelectedRow();
+    if (selectedRow == -1) {
+        // No row is selected
+        if (jTable.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(rootPane, "Table is empty");
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Select a row to delete");
+        }
+    } else {
+        int deleteID=(int)model.getValueAt(selectedRow,0);
+        String query ="Delete from tbReader where readerID=?";
+        
+        
+        try {
+            connection=DriverManager.getConnection(url,username,password);
+            preparedStatement=connection.prepareStatement(query);
+             preparedStatement.setInt(1,deleteID);
+             int result =preparedStatement.executeUpdate();
+             if(result>0){
+                 model.removeRow(selectedRow);
+                 JOptionPane.showMessageDialog(rootPane,"Deleted!");
+             }
+             else
+                 JOptionPane.showMessageDialog(rootPane,"Field to delete!");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            // Close the resources
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        
+        
+        // Row is selected, delete it
+        
+    }
+        
+        
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void maleRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleRadioBtnActionPerformed
@@ -421,6 +521,70 @@ public class ReaderForm extends javax.swing.JFrame {
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
+        model =(DefaultTableModel) jTable.getModel();
+        int select=jTable.getSelectedRow();
+        if(select== -1){
+            if(select ==0){
+            JOptionPane.showMessageDialog(rootPane,"No table contain");}
+            else
+                JOptionPane.showMessageDialog(rootPane,"Select A row please!");
+        }
+        else{
+            int updateID=(int) jTable.getValueAt(jTable.getSelectedRow(),0);
+            String query ="update tbReader set readerName=?,sex=?,Address=? ,phoneNumber=? "
+                    + "where readerID=?";
+            String upName=nameTextField.getText();
+            String upSex;
+
+            if(maleRadioBtn.isSelected()){
+                upSex="male";
+            }
+            else 
+                upSex="female";
+            
+            String upAddress=addressTextField.getText(); 
+            String upPhone=phoneTextfield.getText();
+            try {
+                connection = DriverManager.getConnection(url , username, password);
+                preparedStatement=connection.prepareStatement(query);
+                preparedStatement.setString(1,upName);
+                preparedStatement.setString(2,upSex);
+                preparedStatement.setString(3,upAddress);
+                preparedStatement.setString(4,upPhone);
+                preparedStatement.setInt(5,updateID);
+                int updateResult=preparedStatement.executeUpdate();
+                if (updateResult>0){
+                    
+                    model.setValueAt(upName,jTable.getSelectedRow(), 1);
+                    model.setValueAt(upSex,jTable.getSelectedRow(), 2);
+                    model.setValueAt(upAddress,jTable.getSelectedRow(), 3);
+                    model.setValueAt(upPhone,jTable.getSelectedRow(), 4);
+                    JOptionPane.showMessageDialog(rootPane,"Updated!");
+                }
+
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
+            }finally {
+            // Close the resources
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            }
+                 
+           
+            
+        
+        
+        }
+        
+            
+        
+        
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -438,87 +602,127 @@ public class ReaderForm extends javax.swing.JFrame {
              connection=DriverManager.getConnection(url,username,password);
             
              //JOptionPane.showMessageDialog(rootPane,"Successfully joy ery");
-        
+             boolean istrue=true;
              String readerName=nameTextField.getText();
              String sex="";
-             String address=addressTextField.getText();
-             String phoneNumber=phoneTextfield.getText();
-             
-             
-             //exception with nametextField input
-            if(readerName.isEmpty()){
-                nameTextField.requestFocus();
-                nameInputrequire.setText("*");
-            }
-              if (readerName.matches(".*\\d.*")) {
-            JOptionPane.showMessageDialog(null, "Reader name cannot contain numbers", "Input Error", JOptionPane.ERROR_MESSAGE);
-            nameTextField.setText("");
-            nameTextField.requestFocus();
-            return; // Exit the method
-            }
-            if(!readerName.contains(" ")){
-                   nameInputrequire.setText("lastName required *");
-                   nameTextField.setText("");
-                   nameTextField.requestFocus();
-              
-               }
-             if(!readerName.isEmpty()){
-                nameInputrequire.setText("");
-            }
-            
-            
-
-            //RadioException
-            
              if(maleRadioBtn.isSelected()){
-               sex="male";
+                 sex="male";
              }
-             else if(femaleRadiobtn.isSelected()){
-               sex="female";
-             }
-             
-             
-             if(sex.isEmpty()){
-                 JOptionPane.showMessageDialog(rootPane, "None select sex!","OOp!", JOptionPane.ERROR_MESSAGE);
-             }
-             
-             //Phone exception
-             
-            if(phoneNumber.isEmpty()){
-                phoneTextfield.requestFocus();
-                phoneInputRequire.setText("*");
-            }
-            if(!phoneNumber.isEmpty()){
-                phoneInputRequire.setText("");
-            }
-            
-            
-            //Address exception
-            if(address.isEmpty()){
-                addressTextField.requestFocus();
-                addressInputRequire.setText("*");
-            }
-            if(!address.isEmpty()){
-                addressInputRequire.setText("");
-            }
-            
-                 
-             
-//             System.out.println(readerName);
-//             System.out.println(sex);
-//             System.out.println(phoneNumber);
-//             System.out.println(address);
-            //System.err.println(sex);
-             
+             else
+             sex="female";
+              String address=addressTextField.getText();
+             String phoneNumber=phoneTextfield.getText();
+     
+            model=(DefaultTableModel) jTable.getModel();
+       
+
+ 
+      // Exception with nameTextField input
+//     boolean isValid = false;
+//
+//while (true) {
+//    readerName = nameTextField.getText(); // Ensure you're getting the latest input
+//
+//    if (readerName.isEmpty()) {
+//        nameTextField.requestFocus();
+//        nameInputrequire.setText("*");
+//        JOptionPane.showMessageDialog(null, "Reader name cannot be empty", "Input Error", JOptionPane.ERROR_MESSAGE);
+//    } else if (readerName.matches(".*\\d.*")) {
+//        JOptionPane.showMessageDialog(null, "Reader name cannot contain numbers", "Input Error", JOptionPane.ERROR_MESSAGE);
+//        nameTextField.setText("");
+//        nameTextField.requestFocus();
+//    } else if (readerName.contains(" ")) {
+//        //JOptionPane.showMessageDialog(null, "Last name required (please include a space)", "Input Error", JOptionPane.ERROR_MESSAGE);
+//        nameInputrequire.setText("Last name required ");
+//        nameTextField.setText("");
+//        nameTextField.requestFocus();
+//    } 
+//     if(!readerName.isEmpty() && !readerName.matches(".*\\d.*") && !readerName.contains(" ") ){
+//     break;
+//     }
+//   
+//}
+
+
+       
+    
+    
+   
+  
+
+  
+
+    // RadioButton Exception
+//    if (maleRadioBtn.isSelected()) {
+//        sex = "male";
+//    } else if (femaleRadiobtn.isSelected()) {
+//        sex = "female";
+//    } else {
+//        JOptionPane.showMessageDialog(rootPane, "None select sex!", "Oops!", JOptionPane.ERROR_MESSAGE);
+//        isInputValid = false;
+//    }
+//
+//    // Phone number exception
+//    phoneNumber = phoneTextfield.getText().trim();
+//    if (phoneNumber.isEmpty()) {
+//        phoneTextfield.requestFocus();
+//        phoneInputRequire.setText("*");
+//        isInputValid = false;
+//    } else if (!isValidPhoneNumber(phoneNumber)) {
+//        //JOptionPane.showMessageDialog(rootPane, "Phone number cannot contain characters", "Oops!", JOptionPane.ERROR_MESSAGE);
+//        phoneInputRequire.setText("No charactor");
+//        phoneTextfield.requestFocus();
+//        isInputValid = false;
+//    } else {
+//        phoneInputRequire.setText("");
+//    }
+//
+//    // Address exception
+//     address = addressTextField.getText().trim();
+//    if (address.isEmpty()) {
+//        addressTextField.requestFocus();
+//        addressInputRequire.setText("*");
+//        isInputValid = false;
+//    } else {
+//        addressInputRequire.setText("");
+//    }
+    
+
+    
+
+
+
+    
+
+
+// If we reach this point, all inputs are valid
+//System.out.println(readerName);
+//System.out.println(sex);
+//System.out.println(phoneNumber);
+//System.out.println(address);
+
+// Proceed with further processing, such as storing data in the database
+          
+       
              String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
              preparedStatement =connection.prepareStatement(query);
              preparedStatement.setString(1,readerName);
               preparedStatement.setString(2,sex);
                preparedStatement.setString(3,address);
                 preparedStatement.setString(4,phoneNumber);
+         
                int inserted=preparedStatement.executeUpdate();
+               
+               
+               
                if(inserted>0){
+                   
+                  int lastID=(int)jTable.getValueAt(jTable.getRowCount()+1, 0);
+                  System.out.print(lastID);
+                   
+                   Object[] row={lastID,readerName,sex,address,phoneNumber}; 
                    JOptionPane.showMessageDialog(rootPane,"Done!");
+                   model.addRow(row);
                    
                }
                else
@@ -530,6 +734,30 @@ public class ReaderForm extends javax.swing.JFrame {
 
         
     }//GEN-LAST:event_insertBtnActionPerformed
+
+    private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
+        // TODO add your handling code here:
+        model= (DefaultTableModel) jTable.getModel();
+        
+        int id=(int) model.getValueAt(jTable.getSelectedRow(),0);
+        String name= (String)model.getValueAt(jTable.getSelectedRow(),1);
+        String sex= (String)model.getValueAt(jTable.getSelectedRow(),2);
+        String address= (String)model.getValueAt(jTable.getSelectedRow(),3);
+        String phone= (String)model.getValueAt(jTable.getSelectedRow(),4);
+     
+      idTextField.setText(Integer.toString(id));
+      nameTextField.setText(name);
+      addressTextField.setText(address);
+      phoneTextfield.setText(phone);
+      if (sex.equals("male")){
+      maleRadioBtn.setSelected(true);
+      }
+      else 
+          femaleRadiobtn.setSelected(true);
+      
+      
+        
+    }//GEN-LAST:event_jTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -588,7 +816,7 @@ public class ReaderForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JRadioButton maleRadioBtn;
     private javax.swing.JLabel nameInputrequire;
