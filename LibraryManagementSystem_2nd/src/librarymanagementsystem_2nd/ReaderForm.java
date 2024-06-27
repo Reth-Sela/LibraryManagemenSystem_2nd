@@ -4,6 +4,7 @@
  */
 package librarymanagementsystem_2nd;
 
+import java.awt.Color;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
@@ -13,7 +14,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import javax.swing.BorderFactory;
 import javax.swing.RowFilter;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -34,7 +37,10 @@ public class ReaderForm extends javax.swing.JFrame {
     DefaultTableModel model;
     DefaultTableModel model2;
     TableRowSorter<DefaultTableModel> sorter;
+    Border redBorder = BorderFactory.createLineBorder(Color.RED);
+    Border originalBorder;
     
+
 
     /**
      * Creates new form ReaderForm
@@ -42,7 +48,128 @@ public class ReaderForm extends javax.swing.JFrame {
     public ReaderForm() {
         initComponents();
         table();
+        nameHandleException();
+        phoneHandleException();
+        addressHandleException();
+        
     }
+    
+    // nameText handle exception 
+     private void nameHandleException(){
+         originalBorder=nameTextField.getBorder();
+
+      nameTextField.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validateNameInput();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                                validateNameInput();
+
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                                validateNameInput();
+
+            }
+            
+            private void validateNameInput(){
+                String nameText= nameTextField.getText();
+
+                if (nameText.isEmpty() || nameText.matches(".*\\d.*") || nameText.matches(".*[^a-zA-Z ].*")) {
+                    nameTextField.setBorder(redBorder);
+                    nameInputrequire.setText("*");
+                } else {
+                    nameTextField.setBorder(originalBorder);
+                    nameInputrequire.setText("");
+                }
+      
+            }
+        });
+     }
+     
+     
+     //phoneTextField handle exception
+     
+      private void phoneHandleException(){
+          originalBorder=phoneTextfield.getBorder();
+         
+          phoneTextfield.getDocument().addDocumentListener(new DocumentListener(){
+              @Override
+              public void insertUpdate(DocumentEvent e) {
+                  validatePhoneNumber();
+              }
+
+              @Override
+              public void removeUpdate(DocumentEvent e) {
+                  validatePhoneNumber();
+              }
+
+              @Override
+              public void changedUpdate(DocumentEvent e) {
+                  validatePhoneNumber();
+              }
+              private void validatePhoneNumber(){
+                  String phoneNumber=phoneTextfield.getText();
+                  
+                  if(phoneNumber.isEmpty() || !phoneNumber.matches("^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")){
+                   phoneInputRequire.setText("*");
+                   phoneTextfield.setBorder(redBorder);
+                   
+                  
+              }
+                  else{
+                      phoneTextfield.setBorder(originalBorder);
+                      phoneInputRequire.setText("");
+                  }
+                      
+              
+              }
+          
+          
+          });
+      } 
+      
+      
+      private void addressHandleException(){
+          originalBorder= addressTextField.getBorder();
+          
+          addressTextField.getDocument().addDocumentListener(new DocumentListener(){
+              @Override
+              public void insertUpdate(DocumentEvent e) {
+                  validateAddress();
+              }
+
+              @Override
+              public void removeUpdate(DocumentEvent e) {
+                  validateAddress();
+              }
+
+              @Override
+              public void changedUpdate(DocumentEvent e) {
+                  validateAddress();
+              }
+              
+              private void validateAddress(){
+                  String address= addressTextField.getText();
+                  if(address.isEmpty()){
+                      addressTextField.setBorder(redBorder);
+                      addressInputRequire.setText("*");
+                  }
+                  else
+                  {
+                      addressTextField.setBorder(originalBorder);
+                      addressInputRequire.setText("");
+                  }
+              }
+          });
+      }
+    
+     
+     
     
     
      private static boolean isValidPhoneNumber(String phoneNumber) {
@@ -246,7 +373,7 @@ public class ReaderForm extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nameInputrequire, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nameInputrequire, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(insertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
@@ -442,13 +569,13 @@ public class ReaderForm extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
+                .addGap(64, 64, 64)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGap(18, 18, 18)
                 .addComponent(phoneTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
-                .addComponent(phoneInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(phoneInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
@@ -456,15 +583,16 @@ public class ReaderForm extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(17, 17, 17)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phoneTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(14, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(phoneInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(phoneInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(phoneTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(14, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -482,9 +610,9 @@ public class ReaderForm extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -663,7 +791,7 @@ public class ReaderForm extends javax.swing.JFrame {
         // TODO add your handling code here:
          // Database credentials
         
-        
+       
         try {
             
             //JOptionPane.showMessageDialog(rootPane,"Load success");
@@ -689,22 +817,12 @@ public class ReaderForm extends javax.swing.JFrame {
       
 
      
-  while(true){
-      if (readerName.isEmpty()) {
-        nameTextField.requestFocus();
-        nameInputrequire.setText("*");
-        nameInputrequire.setText("*");
-    }
-      if(!readerName.isEmpty()){
-          break;
-      }
-  }
+ 
+            
+  
     
 
-//    } else if (readerName.matches(".*\\d.*")) {
-//        JOptionPane.showMessageDialog(null, "Reader name cannot contain numbers", "Input Error", JOptionPane.ERROR_MESSAGE);
-//        nameTextField.setText("");
-//        nameTextField.requestFocus();
+  
 //    } else if (readerName.contains(" ")) {
 //        //JOptionPane.showMessageDialog(null, "Last name required (please include a space)", "Input Error", JOptionPane.ERROR_MESSAGE);
 //        nameInputrequire.setText("Last name required ");
@@ -735,22 +853,8 @@ public class ReaderForm extends javax.swing.JFrame {
 //        JOptionPane.showMessageDialog(rootPane, "None select sex!", "Oops!", JOptionPane.ERROR_MESSAGE);
 //        isInputValid = false;
 //    }
-//
-//    // Phone number exception
-//    phoneNumber = phoneTextfield.getText().trim();
-//    if (phoneNumber.isEmpty()) {
-//        phoneTextfield.requestFocus();
-//        phoneInputRequire.setText("*");
-//        isInputValid = false;
-//    } else if (!isValidPhoneNumber(phoneNumber)) {
-//        //JOptionPane.showMessageDialog(rootPane, "Phone number cannot contain characters", "Oops!", JOptionPane.ERROR_MESSAGE);
-//        phoneInputRequire.setText("No charactor");
-//        phoneTextfield.requestFocus();
-//        isInputValid = false;
-//    } else {
-//        phoneInputRequire.setText("");
-//    }
-//
+   
+
 //    // Address exception
 //     address = addressTextField.getText().trim();
 //    if (address.isEmpty()) {
@@ -776,7 +880,7 @@ public class ReaderForm extends javax.swing.JFrame {
 //System.out.println(address);
 
 // Proceed with further processing, such as storing data in the database
-          
+              System.out.println(readerName + sex +address+phoneNumber);
        
 //             String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
 //             preparedStatement =connection.prepareStatement(query);
