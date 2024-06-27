@@ -6,12 +6,18 @@ package librarymanagementsystem_2nd;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.*;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -23,10 +29,11 @@ public class ReaderForm extends javax.swing.JFrame {
     ResultSet resultSet;
     Statement statement;
     String url = "jdbc:sqlserver://LAPTOP-VBAMK3DF\\SQLEXPRESS;databaseName=librarySM;intergratedSecurity=true;encrypt=true;trustServerCertificate=true";
-        String username = "sa";
-        String password = "02062004";
-        
-       DefaultTableModel model;
+    String username = "sa";
+    String password = "02062004";  
+    DefaultTableModel model;
+    DefaultTableModel model2;
+    TableRowSorter<DefaultTableModel> sorter;
     
 
     /**
@@ -36,12 +43,69 @@ public class ReaderForm extends javax.swing.JFrame {
         initComponents();
         table();
     }
+    
+    
      private static boolean isValidPhoneNumber(String phoneNumber) {
         // Regular expression for a valid phone number format (adjust as per your requirements)
         String regex = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$";
         return phoneNumber.matches(regex);
     }
      
+  // add table listener after filtering
+     private void tablelistener(){
+          jTable.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int row = jTable.getSelectedRow();
+            if (row >= 0) {
+                int modelRow = jTable.convertRowIndexToModel(row);
+                int selectedId = (int) model.getValueAt(modelRow, 0); // Assuming the ID is in the first column
+                System.out.println("Selected ID: " + selectedId);
+                
+               String  query ="select * from tbReader where readerID=?";
+               
+                try {
+                    connection =DriverManager.getConnection(url , username ,password);
+                    preparedStatement=connection.prepareStatement(query);
+                    preparedStatement.setInt(1,selectedId);
+                    int getID=0;
+                    String getName="";
+                    String getSex="";
+                    String getAddress="";
+                    String getPhone="";
+                    resultSet=preparedStatement.executeQuery();
+                    while(resultSet.next()){
+                        getID=resultSet.getInt(1);
+                         getName=resultSet.getString(2);
+                         getSex=resultSet.getString(3);
+                         getAddress=resultSet.getString(4);
+                         getPhone=resultSet.getString(5);
+                               
+                    }
+                    String convertID=String.valueOf(getID);
+                    idTextField.setText(convertID);
+                    nameTextField.setText(getName);
+                    if(getSex .equals("male")){
+                        maleRadioBtn.setSelected(true);
+                    }else
+                        femaleRadiobtn.setSelected(true);
+                    addressTextField.setText(getAddress);
+                    phoneTextfield.setText(getPhone);
+                           
+                        
+                    
+                          
+                } catch (SQLException ex) {
+                    Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    });
+     }
+     
+     
+     
+    
+       
      // add all data to put at the table 
      
      private  void table(){
@@ -103,7 +167,7 @@ public class ReaderForm extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        searchTextfeild = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
@@ -183,7 +247,7 @@ public class ReaderForm extends javax.swing.JFrame {
                 .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameInputrequire, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(insertBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
@@ -240,9 +304,9 @@ public class ReaderForm extends javax.swing.JFrame {
                 .addComponent(maleRadioBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(femaleRadiobtn, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 335, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 342, Short.MAX_VALUE)
                 .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39))
+                .addGap(32, 32, 32))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,11 +335,11 @@ public class ReaderForm extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(69, 69, 69)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
+                .addGap(24, 24, 24)
                 .addComponent(addressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(addressInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(194, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,9 +362,14 @@ public class ReaderForm extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Arial", 3, 15)); // NOI18N
         jLabel10.setText("Search");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        searchTextfeild.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchTextfeildMouseClicked(evt);
+            }
+        });
+        searchTextfeild.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                searchTextfeildActionPerformed(evt);
             }
         });
 
@@ -333,25 +402,24 @@ public class ReaderForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(searchTextfeild, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(222, Short.MAX_VALUE))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel9))
-                        .addGap(24, 24, 24)))
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(searchTextfeild, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel9)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         jLabel5.setFont(new java.awt.Font("Arial", 3, 18)); // NOI18N
@@ -374,11 +442,11 @@ public class ReaderForm extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(83, 83, 83)
+                .addGap(48, 48, 48)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(34, 34, 34)
                 .addComponent(phoneTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(48, 48, 48)
                 .addComponent(phoneInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -587,9 +655,9 @@ public class ReaderForm extends javax.swing.JFrame {
         
     }//GEN-LAST:event_updateBtnActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    private void searchTextfeildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextfeildActionPerformed
+        
+    }//GEN-LAST:event_searchTextfeildActionPerformed
 
     private void insertBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertBtnActionPerformed
         // TODO add your handling code here:
@@ -618,15 +686,21 @@ public class ReaderForm extends javax.swing.JFrame {
 
  
       // Exception with nameTextField input
-//     boolean isValid = false;
-//
-//while (true) {
-//    readerName = nameTextField.getText(); // Ensure you're getting the latest input
-//
-//    if (readerName.isEmpty()) {
-//        nameTextField.requestFocus();
-//        nameInputrequire.setText("*");
-//        JOptionPane.showMessageDialog(null, "Reader name cannot be empty", "Input Error", JOptionPane.ERROR_MESSAGE);
+      
+
+     
+  while(true){
+      if (readerName.isEmpty()) {
+        nameTextField.requestFocus();
+        nameInputrequire.setText("*");
+        nameInputrequire.setText("*");
+    }
+      if(!readerName.isEmpty()){
+          break;
+      }
+  }
+    
+
 //    } else if (readerName.matches(".*\\d.*")) {
 //        JOptionPane.showMessageDialog(null, "Reader name cannot contain numbers", "Input Error", JOptionPane.ERROR_MESSAGE);
 //        nameTextField.setText("");
@@ -704,29 +778,23 @@ public class ReaderForm extends javax.swing.JFrame {
 // Proceed with further processing, such as storing data in the database
           
        
-             String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
-             preparedStatement =connection.prepareStatement(query);
-             preparedStatement.setString(1,readerName);
-              preparedStatement.setString(2,sex);
-               preparedStatement.setString(3,address);
-                preparedStatement.setString(4,phoneNumber);
-         
-               int inserted=preparedStatement.executeUpdate();
-               
-               
-               
-               if(inserted>0){
-                   
-                  int lastID=(int)jTable.getValueAt(jTable.getRowCount()+1, 0);
-                  System.out.print(lastID);
-                   
-                   Object[] row={lastID,readerName,sex,address,phoneNumber}; 
-                   JOptionPane.showMessageDialog(rootPane,"Done!");
-                   model.addRow(row);
-                   
-               }
-               else
-                   JOptionPane.showConfirmDialog(rootPane,"Error occur!");
+//             String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
+//             preparedStatement =connection.prepareStatement(query);
+//             preparedStatement.setString(1,readerName);
+//             preparedStatement.setString(2,sex);
+//             preparedStatement.setString(3,address);
+//             preparedStatement.setString(4,phoneNumber);
+//              int inserted=preparedStatement.executeUpdate();
+//             // if insert successfully
+//               if(inserted>0){
+//                  int lastID=(int)jTable.getValueAt(jTable.getRowCount()+1, 0);
+//                  System.out.print(lastID);
+//                   Object[] row={lastID,readerName,sex,address,phoneNumber}; 
+//                   JOptionPane.showMessageDialog(rootPane,"Done!");
+//                   model.addRow(row); 
+//               }
+//               else
+//                   JOptionPane.showConfirmDialog(rootPane,"Error occur!");
                 
         } catch (Exception ex) {
             Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
@@ -758,6 +826,53 @@ public class ReaderForm extends javax.swing.JFrame {
       
         
     }//GEN-LAST:event_jTableMouseClicked
+
+    private void searchTextfeildMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchTextfeildMouseClicked
+        // TODO add your handling code here:
+        model=(DefaultTableModel) jTable.getModel();
+        searchTextfeild.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                filterTable();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                                filterTable();
+
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                                filterTable();
+
+            }
+            
+            public void filterTable(){
+                String text= searchTextfeild.getText();
+                 sorter=new TableRowSorter<>(model);
+                 jTable.setRowSorter(sorter);
+                if(text.trim().length()==0){
+                    sorter.setRowFilter(null);
+                }
+                else
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+            }
+            
+            
+        
+        });
+        
+        
+//        model2= (DefaultTableModel) jTable.getModel();
+//        int getId=(int) model2.getValueAt(jTable.getSelectedRow(), 0);
+//        System.out.println(getId);
+        
+        tablelistener();  
+        
+             
+             
+    }//GEN-LAST:event_searchTextfeildMouseClicked
 
     /**
      * @param args the command line arguments
@@ -817,13 +932,13 @@ public class ReaderForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JRadioButton maleRadioBtn;
     private javax.swing.JLabel nameInputrequire;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JButton newBtn;
     private javax.swing.JLabel phoneInputRequire;
     private javax.swing.JTextField phoneTextfield;
+    private javax.swing.JTextField searchTextfeild;
     private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }
