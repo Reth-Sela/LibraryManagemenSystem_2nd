@@ -945,25 +945,25 @@ public class ReaderForm extends javax.swing.JFrame {
 //System.out.println(address);
 
 // Proceed with further processing, such as storing data in the database
-              System.out.println(readerName + sex +address+phoneNumber);
+              //System.out.println(readerName + sex +address+phoneNumber);
        
-//             String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
-//             preparedStatement =connection.prepareStatement(query);
-//             preparedStatement.setString(1,readerName);
-//             preparedStatement.setString(2,sex);
-//             preparedStatement.setString(3,address);
-//             preparedStatement.setString(4,phoneNumber);
-//              int inserted=preparedStatement.executeUpdate();
-//             // if insert successfully
-//               if(inserted>0){
-//                  int lastID=(int)jTable.getValueAt(jTable.getRowCount()+1, 0);
-//                  System.out.print(lastID);
-//                   Object[] row={lastID,readerName,sex,address,phoneNumber}; 
-//                   JOptionPane.showMessageDialog(rootPane,"Done!");
-//                   model.addRow(row); 
-//               }
-//               else
-//                   JOptionPane.showConfirmDialog(rootPane,"Error occur!");
+             String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
+             preparedStatement =connection.prepareStatement(query);
+             preparedStatement.setString(1,readerName);
+             preparedStatement.setString(2,sex);
+             preparedStatement.setString(3,address);
+             preparedStatement.setString(4,phoneNumber);
+              int inserted=preparedStatement.executeUpdate();
+             // if insert successfully
+               if(inserted>0){
+                  int lastID=(int)jTable.getValueAt(jTable.getRowCount()+1, 0);
+                  System.out.print(lastID);
+                   Object[] row={lastID,readerName,sex,address,phoneNumber}; 
+                   JOptionPane.showMessageDialog(rootPane,"Done!");
+                   model.addRow(row); 
+               }
+               else
+                   JOptionPane.showConfirmDialog(rootPane,"Error occur!");
                 
         } catch (Exception ex) {
             Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
