@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Payment.FrmPayment">
+  <grid id="27dc6" binding="PaymentPanel" layout-manager="GridLayoutManager" row-count="12" column-count="68" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="2355" height="915"/>
+    </constraints>
+    <properties>
+      <enabled value="true"/>
+      <font name="Fira Code" size="18" style="1"/>
+    </properties>
+    <border type="none"/>
+    <children>
+      <component id="2a959" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Search BY:"/>
+        </properties>
+      </component>
+      <vspacer id="5f112">
+        <constraints>
+          <grid row="10" column="66" row-span="2" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <hspacer id="1f408">
+        <constraints>
+          <grid row="10" column="1" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <component id="87446" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="3" column="48" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Pay Date"/>
+        </properties>
+      </component>
+      <component id="7f538" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="48" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Total Amount"/>
+        </properties>
+      </component>
+      <component id="7f85f" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="5" column="48" row-span="2" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Description"/>
+        </properties>
+      </component>
+      <component id="ac07f" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="7" column="48" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Reader ID"/>
+        </properties>
+      </component>
+      <component id="61e64" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="8" column="48" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Librarian ID"/>
+        </properties>
+      </component>
+      <component id="16134" class="javax.swing.JTextField" binding="txtPayDate">
+        <constraints>
+          <grid row="3" column="49" row-span="1" col-span="16" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="!Khmer OS Siemreap" size="18"/>
+        </properties>
+      </component>
+      <component id="7c9e9" class="javax.swing.JTextField" binding="txtAmount">
+        <constraints>
+          <grid row="4" column="49" row-span="1" col-span="16" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="!Khmer OS Siemreap" size="18"/>
+        </properties>
+      </component>
+      <component id="94640" class="javax.swing.JTextField" binding="txtDescription">
+        <constraints>
+          <grid row="5" column="49" row-span="2" col-span="18" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="!Khmer OS Siemreap" size="18"/>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="f1a3e" class="javax.swing.JButton" binding="btnExit">
+        <constraints>
+          <grid row="11" column="64" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Exit"/>
+        </properties>
+      </component>
+      <component id="2cb61" class="javax.swing.JButton" binding="btnDelete">
+        <constraints>
+          <grid row="11" column="2" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <hideActionText value="false"/>
+          <text value="Delete"/>
+        </properties>
+      </component>
+      <component id="3a9e6" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="67" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="      "/>
+        </properties>
+      </component>
+      <component id="3c3a4" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="de212" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="19" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Bernard MT Condensed" size="28"/>
+          <text value="Payment's Imformation"/>
+        </properties>
+      </component>
+      <component id="c068a" class="javax.swing.JButton" binding="btnUpdate">
+        <constraints>
+          <grid row="11" column="7" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Update"/>
+        </properties>
+      </component>
+      <component id="bb218" class="javax.swing.JButton" binding="btnAdd">
+        <constraints>
+          <grid row="11" column="10" row-span="1" col-span="6" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Add"/>
+        </properties>
+      </component>
+      <component id="d5b04" class="javax.swing.JTextField" binding="txtReaderID">
+        <constraints>
+          <grid row="7" column="49" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="!Khmer OS Siemreap" size="18"/>
+        </properties>
+      </component>
+      <component id="ff385" class="javax.swing.JTextField" binding="txtLibrarianID">
+        <constraints>
+          <grid row="8" column="49" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="!Khmer OS Siemreap" size="18"/>
+        </properties>
+      </component>
+      <component id="89bf0" class="javax.swing.JTextField" binding="txtSearch">
+        <constraints>
+          <grid row="1" column="2" row-span="1" col-span="16" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="!Khmer OS Siemreap" size="18"/>
+        </properties>
+      </component>
+      <component id="a959f" class="javax.swing.JButton" binding="btnSearch">
+        <constraints>
+          <grid row="1" column="18" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Search"/>
+        </properties>
+      </component>
+      <component id="7d0a8" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="18" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <icon value="Payment/payment.png"/>
+          <text value=""/>
+          <verticalTextPosition value="3"/>
+        </properties>
+      </component>
+      <grid id="72603" binding="PanelData" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="2" column="1" row-span="8" col-span="19" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <scrollpane id="71b81">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="52a32" class="javax.swing.JTable" binding="tblData">
+                <constraints/>
+                <properties>
+                  <font size="16"/>
+                  <preferredScrollableViewportSize width="600" height="400"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+        </children>
+      </grid>
+      <component id="1dad4" class="javax.swing.JTextField" binding="txtLibrarianName">
+        <constraints>
+          <grid row="2" column="49" row-span="1" col-span="17" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="!Khmer OS Siemreap" size="18"/>
+        </properties>
+      </component>
+      <component id="3950b" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="48" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+          <font name="Fira Code" size="18" style="1"/>
+          <text value="Librarian's Name"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
