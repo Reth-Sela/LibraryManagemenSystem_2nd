@@ -225,7 +225,6 @@ public class FrmPayment extends JFrame {
             String password = "Soben18042003";
 
             Connection connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to database successfully...!");
 
         } catch (SQLException e) {
             e.printStackTrace();
