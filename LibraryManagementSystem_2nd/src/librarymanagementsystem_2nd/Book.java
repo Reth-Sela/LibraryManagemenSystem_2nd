@@ -13,8 +13,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -34,8 +36,11 @@ public class Book extends javax.swing.JFrame {
     String password = "02062004"; 
     DefaultTableModel model;
     TableRowSorter<DefaultTableModel> sorter;
+    Border originalBorder;
+        Border redBorder = BorderFactory.createLineBorder(Color.RED);
 
-    
+
+    //add table listener
     private void tablelistener(){
           bookTable.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -84,10 +89,13 @@ public class Book extends javax.swing.JFrame {
     });
      }
     
+    //when the form start want it to focus title text field 
     private void titleForcus(){
         titleTextField.requestFocus();
     }
     
+    
+    //show all row in the table 
     private  void table(){
         try {
             
@@ -116,6 +124,149 @@ public class Book extends javax.swing.JFrame {
          
      }
     
+    //add the exception to the title text field 
+    
+    private void titleException(){
+        originalBorder=titleTextField.getBorder();
+        titleTextField.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            titleCatchException();            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            titleCatchException();            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+             titleCatchException();
+            }
+            
+            private void titleCatchException(){
+                String getTitle=titleTextField.getText();
+                if(getTitle.isEmpty() || getTitle.matches(".*\\d.*") || getTitle.matches(".*[^a-zA-Z ].*")){
+                    titleInputRequire.setText("*");
+                    titleTextField.setBorder(redBorder);
+                }
+                else{
+                    titleInputRequire.setText("");
+                    titleTextField.setBorder(originalBorder);
+                }
+               
+            }
+        });
+    }
+    
+    //add the exception to the autor text field 
+    
+    private void autorException(){
+        originalBorder=autorTextField.getBorder();
+        autorTextField.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            autorCatchException();            
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            autorCatchException();            
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            autorCatchException();            }
+            private void autorCatchException(){
+                String getAutor=autorTextField.getText();
+                if(getAutor.isEmpty() || getAutor.matches(".*\\d.*") || getAutor.matches(".*[^a-zA-Z ].*")){
+                    autorInputRequire.setText("*");
+                    autorTextField.setBorder(redBorder);
+                }
+                else{
+                    autorInputRequire.setText("");
+                    autorTextField.setBorder(originalBorder);
+                }
+                
+            }
+        });
+    }
+    
+    // add the exception in to the category textfield
+    
+    private void categoryException(){
+        categoryTextField.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            categoryCatchException();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            categoryCatchException();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            categoryCatchException();
+            }
+            private void categoryCatchException(){
+                    String getCategory = categoryTextField.getText();
+
+        
+            
+            if(getCategory.isEmpty() || getCategory.matches(".*\\d.*") || getCategory.matches(".*[^a-zA-Z ].*")){
+                    categoryInputRequire.setText("*");
+                    categoryTextField.setBorder(redBorder);
+                }
+                else{
+                    categoryInputRequire.setText("");
+                    categoryTextField.setBorder(originalBorder);
+                }
+        }
+        });
+    }
+    
+    //add exception to the qtyTextfield
+    private void qtyException(){
+        qtyTextField.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+            qtyCatchException();            
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+            qtyCatchException();            
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            qtyCatchException();            }
+            
+            private void qtyCatchException(){
+            
+            String getQty=qtyTextField.getText();
+            if(getQty.isEmpty() || !getQty.matches(".*[^a-zA-Z ].*")){
+                    qtyInputRequire.setText("*");
+                    qtyTextField.setBorder(redBorder);
+                }
+                else{
+                    qtyInputRequire.setText("");
+                    qtyTextField.setBorder(originalBorder);
+                }
+            }
+            
+        
+        });
+    }
+        
+        
+            
+        
+    
+
+         
+    
+    
 
     /**
      * Creates new form Book
@@ -124,6 +275,10 @@ public class Book extends javax.swing.JFrame {
         initComponents();
         table();
         titleForcus();
+        titleException();
+        autorException();
+        categoryException();
+        qtyException();
     }
 
     /**
@@ -156,6 +311,10 @@ public class Book extends javax.swing.JFrame {
         addBtn = new javax.swing.JButton();
         removeBtn = new javax.swing.JButton();
         updateBtn = new javax.swing.JButton();
+        titleInputRequire = new javax.swing.JLabel();
+        autorInputRequire = new javax.swing.JLabel();
+        categoryInputRequire = new javax.swing.JLabel();
+        qtyInputRequire = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Book's Information");
@@ -172,7 +331,7 @@ public class Book extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(252, 252, 252)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(370, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -306,6 +465,11 @@ public class Book extends javax.swing.JFrame {
                 removeBtnMouseExited(evt);
             }
         });
+        removeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeBtnActionPerformed(evt);
+            }
+        });
 
         updateBtn.setBackground(new java.awt.Color(204, 255, 204));
         updateBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -323,6 +487,14 @@ public class Book extends javax.swing.JFrame {
                 updateBtnActionPerformed(evt);
             }
         });
+
+        titleInputRequire.setForeground(new java.awt.Color(255, 0, 0));
+
+        autorInputRequire.setForeground(new java.awt.Color(255, 0, 0));
+
+        categoryInputRequire.setForeground(new java.awt.Color(255, 0, 0));
+
+        qtyInputRequire.setForeground(new java.awt.Color(255, 0, 0));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -360,9 +532,9 @@ public class Book extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(157, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 6, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -372,6 +544,12 @@ public class Book extends javax.swing.JFrame {
                                 .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(80, 80, 80))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(titleInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(autorInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(categoryInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(qtyInputRequire, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(48, 48, 48))))))
         );
@@ -393,19 +571,24 @@ public class Book extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3)
-                            .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(titleTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(titleInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(autorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(autorInputRequire, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(categoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(categoryTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel5))
+                            .addComponent(categoryInputRequire))
                         .addGap(31, 31, 31)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(qtyTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)))
+                            .addComponent(jLabel6)
+                            .addComponent(qtyInputRequire)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -465,6 +648,56 @@ public class Book extends javax.swing.JFrame {
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         // TODO add your handling code here:
+        model = (DefaultTableModel) bookTable.getModel();
+      //  int
+        String updateIDstring=idTextField.getText();
+        //int updateID=Integer.parseInt(updateIDstring);
+        //System.out.println(updateID);
+        int select= bookTable.getSelectedRow();
+        if(select== -1){
+            if(select ==0){
+            JOptionPane.showMessageDialog(rootPane,"No table contain");}
+            else
+                JOptionPane.showMessageDialog(rootPane,"Select A row please!");
+        }
+        else{
+            int updateID=(int)bookTable.getValueAt(bookTable.getSelectedRow(), 0);
+            System.out.println(updateID);
+            //get the text from textfield
+            String title=titleTextField.getText();
+            String category=categoryTextField.getText();
+            String autor=autorTextField.getText();
+            String stringQty=qtyTextField.getText();
+            
+            int qty=Integer.parseInt(stringQty);
+            
+            
+            
+            String query ="Update tbBook set bookTitle=? ,category=? ,autor=? ,bookQty=? where bookID=?";
+            try {
+                connection=DriverManager.getConnection(url,username, password);
+                preparedStatement=connection.prepareStatement(query);
+                preparedStatement.setString(1, title);
+                preparedStatement.setString(2,category);
+                preparedStatement.setString(3,autor);
+                preparedStatement.setInt(4,qty);
+                preparedStatement.setInt(5,updateID);
+                int updateResult=preparedStatement.executeUpdate();
+                if (updateResult>0){
+                    
+                    model.setValueAt(title,bookTable.getSelectedRow(), 1);
+                    model.setValueAt(category,bookTable.getSelectedRow(), 2);
+                    model.setValueAt(autor,bookTable.getSelectedRow(), 3);
+                    model.setValueAt(qty,bookTable.getSelectedRow(), 4);
+                    JOptionPane.showMessageDialog(rootPane,"Updated!");
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(Book.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void newBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBtnActionPerformed
@@ -616,6 +849,45 @@ public class Book extends javax.swing.JFrame {
          tablelistener();
     }//GEN-LAST:event_searchTextFieldMouseClicked
 
+    private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
+       // TODO add your handling code here:
+        model= (DefaultTableModel) bookTable.getModel();
+        int selectRow= bookTable.getSelectedRow();
+        System.out.println(selectRow);
+        
+        if (selectRow == -1) {
+        // No row is selected
+        if (bookTable.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(rootPane, "Table is empty");
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Select a row to delete");
+        }
+    } else {
+            int removeID = (int) bookTable.getValueAt(selectRow, 0);
+            String query= "Delete from tbBook where bookID=?";
+            
+            try {
+                connection =DriverManager.getConnection(url,username, password);
+                preparedStatement=connection.prepareStatement(query);
+                preparedStatement.setInt(1, removeID);
+                int resultRemove= preparedStatement.executeUpdate();
+                if (resultRemove >0){
+                    model.removeRow(selectRow);
+                    JOptionPane.showMessageDialog(rootPane, "Deleted");
+                }
+                else 
+                 JOptionPane.showMessageDialog(rootPane, "feild to delete ");
+
+            } catch (SQLException ex) {
+                Logger.getLogger(Book.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+            
+        
+        
+    }//GEN-LAST:event_removeBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -653,8 +925,10 @@ public class Book extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
+    private javax.swing.JLabel autorInputRequire;
     private javax.swing.JTextField autorTextField;
     private javax.swing.JTable bookTable;
+    private javax.swing.JLabel categoryInputRequire;
     private javax.swing.JTextField categoryTextField;
     private javax.swing.JTextField idTextField;
     private javax.swing.JLabel jLabel1;
@@ -668,9 +942,11 @@ public class Book extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton newBtn;
+    private javax.swing.JLabel qtyInputRequire;
     private javax.swing.JTextField qtyTextField;
     private javax.swing.JButton removeBtn;
     private javax.swing.JTextField searchTextField;
+    private javax.swing.JLabel titleInputRequire;
     private javax.swing.JTextField titleTextField;
     private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables

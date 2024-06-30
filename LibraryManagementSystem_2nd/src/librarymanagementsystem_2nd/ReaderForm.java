@@ -5,10 +5,6 @@
 package librarymanagementsystem_2nd;
 
 import java.awt.Color;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -168,15 +164,6 @@ public class ReaderForm extends javax.swing.JFrame {
           });
       }
     
-     
-     
-    
-    
-     private static boolean isValidPhoneNumber(String phoneNumber) {
-        // Regular expression for a valid phone number format (adjust as per your requirements)
-        String regex = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$";
-        return phoneNumber.matches(regex);
-    }
      
   // add table listener after filtering
      private void tablelistener(){
@@ -762,14 +749,9 @@ public class ReaderForm extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-        
-        
-        
-        // Row is selected, delete it
-        
+     
     }
-        
-        
+       
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void maleRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleRadioBtnActionPerformed
@@ -781,7 +763,7 @@ public class ReaderForm extends javax.swing.JFrame {
     }//GEN-LAST:event_femaleRadiobtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
-        // TODO add your handling code here:
+         // TODO add your handling code here:
         model =(DefaultTableModel) jTable.getModel();
         int select=jTable.getSelectedRow();
         if(select== -1){
@@ -836,16 +818,9 @@ public class ReaderForm extends javax.swing.JFrame {
                 e.printStackTrace();
             }
             }
-                 
-           
-            
-        
-        
+      
         }
-        
-            
-        
-        
+      
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void searchTextfeildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextfeildActionPerformed
@@ -876,77 +851,6 @@ public class ReaderForm extends javax.swing.JFrame {
      
             model=(DefaultTableModel) jTable.getModel();
        
-
- 
-      // Exception with nameTextField input
-      
-
-     
- 
-            
-  
-    
-
-  
-//    } else if (readerName.contains(" ")) {
-//        //JOptionPane.showMessageDialog(null, "Last name required (please include a space)", "Input Error", JOptionPane.ERROR_MESSAGE);
-//        nameInputrequire.setText("Last name required ");
-//        nameTextField.setText("");
-//        nameTextField.requestFocus();
-//    } 
-//     if(!readerName.isEmpty() && !readerName.matches(".*\\d.*") && !readerName.contains(" ") ){
-//     break;
-//     }
-//   
-//}
-
-
-       
-    
-    
-   
-  
-
-  
-
-    // RadioButton Exception
-//    if (maleRadioBtn.isSelected()) {
-//        sex = "male";
-//    } else if (femaleRadiobtn.isSelected()) {
-//        sex = "female";
-//    } else {
-//        JOptionPane.showMessageDialog(rootPane, "None select sex!", "Oops!", JOptionPane.ERROR_MESSAGE);
-//        isInputValid = false;
-//    }
-   
-
-//    // Address exception
-//     address = addressTextField.getText().trim();
-//    if (address.isEmpty()) {
-//        addressTextField.requestFocus();
-//        addressInputRequire.setText("*");
-//        isInputValid = false;
-//    } else {
-//        addressInputRequire.setText("");
-//    }
-    
-
-    
-
-
-
-    
-
-
-// If we reach this point, all inputs are valid
-//System.out.println(readerName);
-//System.out.println(sex);
-//System.out.println(phoneNumber);
-//System.out.println(address);
-
-// Proceed with further processing, such as storing data in the database
-              //System.out.println(readerName + sex +address+phoneNumber);
-       
              String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
              preparedStatement =connection.prepareStatement(query);
              preparedStatement.setString(1,readerName);
@@ -956,7 +860,8 @@ public class ReaderForm extends javax.swing.JFrame {
               int inserted=preparedStatement.executeUpdate();
              // if insert successfully
                if(inserted>0){
-                  int lastID=(int)jTable.getValueAt(jTable.getRowCount()+1, 0);
+                  int lastID=(int)jTable.getValueAt(jTable.getRowCount()-1, 0);
+                  lastID+=1;
                   System.out.print(lastID);
                    Object[] row={lastID,readerName,sex,address,phoneNumber}; 
                    JOptionPane.showMessageDialog(rootPane,"Done!");
@@ -969,7 +874,6 @@ public class ReaderForm extends javax.swing.JFrame {
             Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        
     }//GEN-LAST:event_insertBtnActionPerformed
 
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
@@ -991,9 +895,7 @@ public class ReaderForm extends javax.swing.JFrame {
       }
       else 
           femaleRadiobtn.setSelected(true);
-      
-      
-        
+     
     }//GEN-LAST:event_jTableMouseClicked
 
     private void searchTextfeildMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchTextfeildMouseClicked
@@ -1027,20 +929,10 @@ public class ReaderForm extends javax.swing.JFrame {
                 else
                     sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
             }
-            
-            
-        
+      
         });
-        
-        
-//        model2= (DefaultTableModel) jTable.getModel();
-//        int getId=(int) model2.getValueAt(jTable.getSelectedRow(), 0);
-//        System.out.println(getId);
-        
-        tablelistener();  
-        
-             
-             
+             tablelistener();  
+     
     }//GEN-LAST:event_searchTextfeildMouseClicked
 
     private void newBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newBtnMouseEntered
