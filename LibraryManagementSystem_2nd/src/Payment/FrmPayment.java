@@ -16,7 +16,11 @@ import java.util.Date;
 
 
 public class FrmPayment extends JFrame {
-
+   public static void main(String[] arg){
+       FrmPayment myForm = new FrmPayment();
+       myForm.connectToDatabase();
+       myForm.fetchData();
+   }
     private JTextField txtSearch;
     private JButton btnDelete;
     private JButton btnUpdate;

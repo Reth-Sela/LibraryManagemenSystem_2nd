@@ -8,6 +8,7 @@
     <properties>
       <enabled value="true"/>
       <font name="Fira Code" size="18" style="1"/>
+      <foreground color="-7824897"/>
     </properties>
     <border type="none"/>
     <children>
