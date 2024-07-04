@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="87e75184-1714-4f7a-a9f9-517907fa4053" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/Payment/FrmPayment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/librarymanagementsystem_2nd/LibraryManagementSystem_2nd.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/LibraryManagemenSystem_2nd/librarymanagementsystem_2nd/LibraryManagementSystem_2nd.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2id9O6NgnywXn7EXha0b4XrmeL0" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Book.executor": "Run",
+    "Application.LibraryManagementSystem_2nd.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.ReaderForm (1).executor": "Run",
+    "Application.ReaderForm (2).executor": "Run",
+    "Application.ReaderForm.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "E:/SQLDriver/sqljdbc_12.6.2.0_enu/sqljdbc_12.6/enu/jars/mssql-jdbc-12.6.2.jre11.jar",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="Book" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="librarymanagementsystem_2nd.Book" />
+      <module name="LibraryManagemenSystem_2nd" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="librarymanagementsystem_2nd.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LibraryManagementSystem_2nd" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="librarymanagementsystem_2nd.LibraryManagementSystem_2nd" />
+      <module name="LibraryManagemenSystem_2nd" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="librarymanagementsystem_2nd.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Payment.Main" />
+      <module name="LibraryManagemenSystem_2nd" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Payment.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ReaderForm (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="librarymanagementsystem_2nd.ReaderForm" />
+      <module name="LibraryManagemenSystem_2nd" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="librarymanagementsystem_2nd.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ReaderForm (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="librarymanagementsystem_2nd.ReaderForm" />
+      <module name="LibraryManagemenSystem_2nd" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="librarymanagementsystem_2nd.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Book" />
+        <item itemvalue="Application.ReaderForm (2)" />
+        <item itemvalue="Application.ReaderForm (1)" />
+        <item itemvalue="Application.LibraryManagementSystem_2nd" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="87e75184-1714-4f7a-a9f9-517907fa4053" name="Changes" comment="" />
+      <created>1719809551358</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1719809551358</updated>
+    </task>
+    <servers />
+  </component>
+</project>

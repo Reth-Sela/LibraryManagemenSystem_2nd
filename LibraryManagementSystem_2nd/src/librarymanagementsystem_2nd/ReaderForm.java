@@ -23,20 +23,19 @@ import javax.swing.table.TableRowSorter;
  * @author User
  */
 public class ReaderForm extends javax.swing.JFrame {
-    Connection connection=null;
+
+    Connection connection = null;
     PreparedStatement preparedStatement;
     ResultSet resultSet;
     Statement statement;
     String url = "jdbc:sqlserver://LAPTOP-VBAMK3DF\\SQLEXPRESS;databaseName=librarySM;intergratedSecurity=true;encrypt=true;trustServerCertificate=true";
     String username = "sa";
-    String password = "02062004";  
+    String password = "02062004";
     DefaultTableModel model;
     DefaultTableModel model2;
     TableRowSorter<DefaultTableModel> sorter;
     Border redBorder = BorderFactory.createLineBorder(Color.RED);
     Border originalBorder;
-    
-
 
     /**
      * Creates new form ReaderForm
@@ -47,14 +46,14 @@ public class ReaderForm extends javax.swing.JFrame {
         nameHandleException();
         phoneHandleException();
         addressHandleException();
-        
-    }
-    
-    // nameText handle exception 
-     private void nameHandleException(){
-         originalBorder=nameTextField.getBorder();
 
-      nameTextField.getDocument().addDocumentListener(new DocumentListener(){
+    }
+
+    // nameText handle exception 
+    private void nameHandleException() {
+        originalBorder = nameTextField.getBorder();
+
+        nameTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 validateNameInput();
@@ -62,18 +61,18 @@ public class ReaderForm extends javax.swing.JFrame {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                                validateNameInput();
+                validateNameInput();
 
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                                validateNameInput();
+                validateNameInput();
 
             }
-            
-            private void validateNameInput(){
-                String nameText= nameTextField.getText();
+
+            private void validateNameInput() {
+                String nameText = nameTextField.getText();
 
                 if (nameText.isEmpty() || nameText.matches(".*\\d.*") || nameText.matches(".*[^a-zA-Z ].*")) {
                     nameTextField.setBorder(redBorder);
@@ -82,174 +81,156 @@ public class ReaderForm extends javax.swing.JFrame {
                     nameTextField.setBorder(originalBorder);
                     nameInputrequire.setText("");
                 }
-      
+
             }
         });
-     }
-     
-     
-     //phoneTextField handle exception
-     
-      private void phoneHandleException(){
-          originalBorder=phoneTextfield.getBorder();
-         
-          phoneTextfield.getDocument().addDocumentListener(new DocumentListener(){
-              @Override
-              public void insertUpdate(DocumentEvent e) {
-                  validatePhoneNumber();
-              }
+    }
 
-              @Override
-              public void removeUpdate(DocumentEvent e) {
-                  validatePhoneNumber();
-              }
+    //phoneTextField handle exception
+    private void phoneHandleException() {
+        originalBorder = phoneTextfield.getBorder();
 
-              @Override
-              public void changedUpdate(DocumentEvent e) {
-                  validatePhoneNumber();
-              }
-              private void validatePhoneNumber(){
-                  String phoneNumber=phoneTextfield.getText();
-                  
-                  if(phoneNumber.isEmpty() || !phoneNumber.matches("^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")){
-                   phoneInputRequire.setText("*");
-                   phoneTextfield.setBorder(redBorder);
-                   
-                  
-              }
-                  else{
-                      phoneTextfield.setBorder(originalBorder);
-                      phoneInputRequire.setText("");
-                  }
-                      
-              
-              }
-          
-          
-          });
-      } 
-      
-      
-      private void addressHandleException(){
-          originalBorder= addressTextField.getBorder();
-          
-          addressTextField.getDocument().addDocumentListener(new DocumentListener(){
-              @Override
-              public void insertUpdate(DocumentEvent e) {
-                  validateAddress();
-              }
+        phoneTextfield.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validatePhoneNumber();
+            }
 
-              @Override
-              public void removeUpdate(DocumentEvent e) {
-                  validateAddress();
-              }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validatePhoneNumber();
+            }
 
-              @Override
-              public void changedUpdate(DocumentEvent e) {
-                  validateAddress();
-              }
-              
-              private void validateAddress(){
-                  String address= addressTextField.getText();
-                  if(address.isEmpty()){
-                      addressTextField.setBorder(redBorder);
-                      addressInputRequire.setText("*");
-                  }
-                  else
-                  {
-                      addressTextField.setBorder(originalBorder);
-                      addressInputRequire.setText("");
-                  }
-              }
-          });
-      }
-    
-     
-  // add table listener after filtering
-     private void tablelistener(){
-          jTable.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            int row = jTable.getSelectedRow();
-            if (row >= 0) {
-                int modelRow = jTable.convertRowIndexToModel(row);
-                int selectedId = (int) model.getValueAt(modelRow, 0); // Assuming the ID is in the first column
-                System.out.println("Selected ID: " + selectedId);
-                
-               String  query ="select * from tbReader where readerID=?";
-               
-                try {
-                    connection =DriverManager.getConnection(url , username ,password);
-                    preparedStatement=connection.prepareStatement(query);
-                    preparedStatement.setInt(1,selectedId);
-                    int getID=0;
-                    String getName="";
-                    String getSex="";
-                    String getAddress="";
-                    String getPhone="";
-                    resultSet=preparedStatement.executeQuery();
-                    while(resultSet.next()){
-                        getID=resultSet.getInt(1);
-                         getName=resultSet.getString(2);
-                         getSex=resultSet.getString(3);
-                         getAddress=resultSet.getString(4);
-                         getPhone=resultSet.getString(5);
-                               
-                    }
-                    String convertID=String.valueOf(getID);
-                    idTextField.setText(convertID);
-                    nameTextField.setText(getName);
-                    if(getSex .equals("male")){
-                        maleRadioBtn.setSelected(true);
-                    }else
-                        femaleRadiobtn.setSelected(true);
-                    addressTextField.setText(getAddress);
-                    phoneTextfield.setText(getPhone);
-                           
-                        
-                    
-                          
-                } catch (SQLException ex) {
-                    Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                validatePhoneNumber();
+            }
+
+            private void validatePhoneNumber() {
+                String phoneNumber = phoneTextfield.getText();
+
+                if (phoneNumber.isEmpty() || !phoneNumber.matches("^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")) {
+                    phoneInputRequire.setText("*");
+                    phoneTextfield.setBorder(redBorder);
+
+                } else {
+                    phoneTextfield.setBorder(originalBorder);
+                    phoneInputRequire.setText("");
+                }
+
+            }
+
+        });
+    }
+
+    private void addressHandleException() {
+        originalBorder = addressTextField.getBorder();
+
+        addressTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                validateAddress();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                validateAddress();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                validateAddress();
+            }
+
+            private void validateAddress() {
+                String address = addressTextField.getText();
+                if (address.isEmpty()) {
+                    addressTextField.setBorder(redBorder);
+                    addressInputRequire.setText("*");
+                } else {
+                    addressTextField.setBorder(originalBorder);
+                    addressInputRequire.setText("");
                 }
             }
-        }
-    });
-     }
-     
-     
-     
-    
-       
-     // add all data to put at the table 
-     
-     private  void table(){
-        try {
-            connection=DriverManager.getConnection(url,username,password);
-            model=(DefaultTableModel) jTable.getModel();
-            statement =connection.createStatement();
-            String query="select * from tbReader order by readerID";
-            resultSet=statement.executeQuery(query);
-            while(resultSet.next()){
-              int id=resultSet.getInt("readerID");
-              String name=resultSet.getString("readerName");
-              String sex=resultSet.getString("sex");
-              String address=resultSet.getString("Address");
-              String phone=resultSet.getString("phoneNumber");
-            // System.out.println(id+name+sex+address+phone);
-              
-              Object[] string={id,name,sex,address,phone};
-             model.addRow(string);
-                      
+        });
+    }
+
+    // add table listener after filtering
+    private void tablelistener() {
+        jTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTable.getSelectedRow();
+                if (row >= 0) {
+                    int modelRow = jTable.convertRowIndexToModel(row);
+                    int selectedId = (int) model.getValueAt(modelRow, 0); // Assuming the ID is in the first column
+                    System.out.println("Selected ID: " + selectedId);
+
+                    String query = "{call spGetReaderByID(?)}";
+
+                    try {
+                        connection = DriverManager.getConnection(url, username, password);
+                        CallableStatement collap = connection.prepareCall(query);
+                        collap.setInt(1, selectedId);
+                        int getID = 0;
+                        String getName = "";
+                        String getSex = "";
+                        String getAddress = "";
+                        String getPhone = "";
+                        resultSet = collap.executeQuery();
+                        while (resultSet.next()) {
+                            getID = resultSet.getInt(1);
+                            getName = resultSet.getString(2);
+                            getSex = resultSet.getString(3);
+                            getAddress = resultSet.getString(4);
+                            getPhone = resultSet.getString(5);
+
+                        }
+                        String convertID = String.valueOf(getID);
+                        idTextField.setText(convertID);
+                        nameTextField.setText(getName);
+                        if (getSex.equals("male")) {
+                            maleRadioBtn.setSelected(true);
+                        } else {
+                            femaleRadiobtn.setSelected(true);
+                        }
+                        addressTextField.setText(getAddress);
+                        phoneTextfield.setText(getPhone);
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
-            
+        });
+    }
+
+    // add all data to put at the table 
+    private void table() {
+        try {
+            connection = DriverManager.getConnection(url, username, password);
+            model = (DefaultTableModel) jTable.getModel();
+            statement = connection.createStatement();
+            String query = "select * from vwReaderSortByID order by readerID";
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                int id = resultSet.getInt("readerID");
+                String name = resultSet.getString("readerName");
+                String sex = resultSet.getString("sex");
+                String address = resultSet.getString("Address");
+                String phone = resultSet.getString("phoneNumber");
+                // System.out.println(id+name+sex+address+phone);
+
+                Object[] string = {id, name, sex, address, phone};
+                model.addRow(string);
+
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-         
-     }
-     
-      
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -696,7 +677,7 @@ public class ReaderForm extends javax.swing.JFrame {
 
     private void newBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newBtnActionPerformed
         // TODO add your handling code here:
-        String none="";
+        String none = "";
         idTextField.setText(none);
         nameTextField.setText(none);
         phoneTextfield.setText(none);
@@ -709,49 +690,53 @@ public class ReaderForm extends javax.swing.JFrame {
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // TODO add your handling code here:
-      // Ensure model is correctly set to the table's model
-    model = (DefaultTableModel) jTable.getModel();
+        // Ensure model is correctly set to the table's model
+        model = (DefaultTableModel) jTable.getModel();
 
-    // Check if a row is selected
-    int selectedRow = jTable.getSelectedRow();
-    if (selectedRow == -1) {
-        // No row is selected
-        if (jTable.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(rootPane, "Table is empty");
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Select a row to delete");
-        }
-    } else {
-        int deleteID=(int)model.getValueAt(selectedRow,0);
-        String query ="Delete from tbReader where readerID=?";
-        
-        
-        try {
-            connection=DriverManager.getConnection(url,username,password);
-            preparedStatement=connection.prepareStatement(query);
-             preparedStatement.setInt(1,deleteID);
-             int result =preparedStatement.executeUpdate();
-             if(result>0){
-                 model.removeRow(selectedRow);
-                 JOptionPane.showMessageDialog(rootPane,"Deleted!");
-             }
-             else
-                 JOptionPane.showMessageDialog(rootPane,"Field to delete!");
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
-            // Close the resources
-            try {
-                if (preparedStatement != null) preparedStatement.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+        // Check if a row is selected
+        int selectedRow = jTable.getSelectedRow();
+        if (selectedRow == -1) {
+            // No row is selected
+            if (jTable.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(rootPane, "Table is empty");
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Select a row to delete");
             }
+        } else {
+            int deleteID = (int) model.getValueAt(selectedRow, 0);
+            String query = "{call spDeleteByID(?)}";
+
+            try {
+                connection = DriverManager.getConnection(url, username, password);
+                CallableStatement callabble = connection.prepareCall(query);
+                callabble.setInt(1, deleteID);
+                int result = callabble.executeUpdate();
+                System.out.println(result);
+                if (result == -1) {
+                    model.removeRow(selectedRow);
+                    JOptionPane.showMessageDialog(rootPane, "Deleted!");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Field to delete!");
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                // Close the resources
+                try {
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
-     
-    }
-       
+
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void maleRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleRadioBtnActionPerformed
@@ -763,113 +748,113 @@ public class ReaderForm extends javax.swing.JFrame {
     }//GEN-LAST:event_femaleRadiobtnActionPerformed
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
-         // TODO add your handling code here:
-        model =(DefaultTableModel) jTable.getModel();
-        int select=jTable.getSelectedRow();
-        if(select== -1){
-            if(select ==0){
-            JOptionPane.showMessageDialog(rootPane,"No table contain");}
-            else
-                JOptionPane.showMessageDialog(rootPane,"Select A row please!");
-        }
-        else{
-            int updateID=(int) jTable.getValueAt(jTable.getSelectedRow(),0);
-            String query ="update tbReader set readerName=?,sex=?,Address=? ,phoneNumber=? "
-                    + "where readerID=?";
-            String upName=nameTextField.getText();
+        // TODO add your handling code here:
+        model = (DefaultTableModel) jTable.getModel();
+        int select = jTable.getSelectedRow();
+        if (select == -1) {
+            if (select == 0) {
+                JOptionPane.showMessageDialog(rootPane, "No table contain");
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Select A row please!");
+            }
+        } else {
+            int updateID = (int) jTable.getValueAt(jTable.getSelectedRow(), 0);
+            String query = "{call spUpdateByID(?,?,?,?,?)}";
+            String upName = nameTextField.getText();
             String upSex;
 
-            if(maleRadioBtn.isSelected()){
-                upSex="male";
+            if (maleRadioBtn.isSelected()) {
+                upSex = "male";
+            } else {
+                upSex = "female";
             }
-            else 
-                upSex="female";
-            
-            String upAddress=addressTextField.getText(); 
-            String upPhone=phoneTextfield.getText();
+
+            String upAddress = addressTextField.getText();
+            String upPhone = phoneTextfield.getText();
             try {
-                connection = DriverManager.getConnection(url , username, password);
-                preparedStatement=connection.prepareStatement(query);
-                preparedStatement.setString(1,upName);
-                preparedStatement.setString(2,upSex);
-                preparedStatement.setString(3,upAddress);
-                preparedStatement.setString(4,upPhone);
-                preparedStatement.setInt(5,updateID);
-                int updateResult=preparedStatement.executeUpdate();
-                if (updateResult>0){
-                    
-                    model.setValueAt(upName,jTable.getSelectedRow(), 1);
-                    model.setValueAt(upSex,jTable.getSelectedRow(), 2);
-                    model.setValueAt(upAddress,jTable.getSelectedRow(), 3);
-                    model.setValueAt(upPhone,jTable.getSelectedRow(), 4);
-                    JOptionPane.showMessageDialog(rootPane,"Updated!");
+                connection = DriverManager.getConnection(url, username, password);
+                CallableStatement callable = connection.prepareCall(query);
+                callable.setInt(1, updateID);
+                callable.setString(2, upName);
+                callable.setString(3, upSex);
+                callable.setString(4, upAddress);
+                callable.setString(5, upPhone);
+                int updateResult = callable.executeUpdate();
+                if (updateResult == -1) {
+
+                    model.setValueAt(upName, jTable.getSelectedRow(), 1);
+                    model.setValueAt(upSex, jTable.getSelectedRow(), 2);
+                    model.setValueAt(upAddress, jTable.getSelectedRow(), 3);
+                    model.setValueAt(upPhone, jTable.getSelectedRow(), 4);
+                    JOptionPane.showMessageDialog(rootPane, "Updated!");
                 }
 
-                
-                
             } catch (SQLException ex) {
                 Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
-            }finally {
-            // Close the resources
-            try {
-                if (preparedStatement != null) preparedStatement.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } finally {
+                // Close the resources
+                try {
+                    if (preparedStatement != null) {
+                        preparedStatement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-            }
-      
+
         }
-      
+
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void searchTextfeildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextfeildActionPerformed
-        
+
     }//GEN-LAST:event_searchTextfeildActionPerformed
 
     private void insertBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertBtnActionPerformed
         // TODO add your handling code here:
-         // Database credentials
-        
-       
+        // Database credentials
+
         try {
-            
+
             //JOptionPane.showMessageDialog(rootPane,"Load success");
-             connection=DriverManager.getConnection(url,username,password);
-            
-             //JOptionPane.showMessageDialog(rootPane,"Successfully joy ery");
-             boolean istrue=true;
-             String readerName=nameTextField.getText();
-             String sex="";
-             if(maleRadioBtn.isSelected()){
-                 sex="male";
-             }
-             else
-             sex="female";
-              String address=addressTextField.getText();
-             String phoneNumber=phoneTextfield.getText();
-     
-            model=(DefaultTableModel) jTable.getModel();
-       
-             String query="INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
-             preparedStatement =connection.prepareStatement(query);
-             preparedStatement.setString(1,readerName);
-             preparedStatement.setString(2,sex);
-             preparedStatement.setString(3,address);
-             preparedStatement.setString(4,phoneNumber);
-              int inserted=preparedStatement.executeUpdate();
-             // if insert successfully
-               if(inserted>0){
-                  int lastID=(int)jTable.getValueAt(jTable.getRowCount()-1, 0);
-                  lastID+=1;
-                  System.out.print(lastID);
-                   Object[] row={lastID,readerName,sex,address,phoneNumber}; 
-                   JOptionPane.showMessageDialog(rootPane,"Done!");
-                   model.addRow(row); 
-               }
-               else
-                   JOptionPane.showConfirmDialog(rootPane,"Error occur!");
-                
+            connection = DriverManager.getConnection(url, username, password);
+
+            //JOptionPane.showMessageDialog(rootPane,"Successfully joy ery");
+            boolean istrue = true;
+            String readerName = nameTextField.getText();
+            String sex = "";
+            if (maleRadioBtn.isSelected()) {
+                sex = "male";
+            } else {
+                sex = "female";
+            }
+            String address = addressTextField.getText();
+            String phoneNumber = phoneTextfield.getText();
+
+            model = (DefaultTableModel) jTable.getModel();
+
+            String query = "INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, readerName);
+            preparedStatement.setString(2, sex);
+            preparedStatement.setString(3, address);
+            preparedStatement.setString(4, phoneNumber);
+            int inserted = preparedStatement.executeUpdate();
+            // if insert successfully
+            if (inserted > 0) {
+                int lastID = (int) jTable.getValueAt(jTable.getRowCount() - 1, 0);
+                lastID += 1;
+                System.out.print(lastID);
+                Object[] row = {lastID, readerName, sex, address, phoneNumber};
+                JOptionPane.showMessageDialog(rootPane, "Done!");
+                model.addRow(row);
+            } else {
+                JOptionPane.showConfirmDialog(rootPane, "Error occur!");
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(ReaderForm.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -878,30 +863,30 @@ public class ReaderForm extends javax.swing.JFrame {
 
     private void jTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableMouseClicked
         // TODO add your handling code here:
-        model= (DefaultTableModel) jTable.getModel();
-        
-        int id=(int) model.getValueAt(jTable.getSelectedRow(),0);
-        String name= (String)model.getValueAt(jTable.getSelectedRow(),1);
-        String sex= (String)model.getValueAt(jTable.getSelectedRow(),2);
-        String address= (String)model.getValueAt(jTable.getSelectedRow(),3);
-        String phone= (String)model.getValueAt(jTable.getSelectedRow(),4);
-     
-      idTextField.setText(Integer.toString(id));
-      nameTextField.setText(name);
-      addressTextField.setText(address);
-      phoneTextfield.setText(phone);
-      if (sex.equals("male")){
-      maleRadioBtn.setSelected(true);
-      }
-      else 
-          femaleRadiobtn.setSelected(true);
-     
+        model = (DefaultTableModel) jTable.getModel();
+
+        int id = (int) model.getValueAt(jTable.getSelectedRow(), 0);
+        String name = (String) model.getValueAt(jTable.getSelectedRow(), 1);
+        String sex = (String) model.getValueAt(jTable.getSelectedRow(), 2);
+        String address = (String) model.getValueAt(jTable.getSelectedRow(), 3);
+        String phone = (String) model.getValueAt(jTable.getSelectedRow(), 4);
+
+        idTextField.setText(Integer.toString(id));
+        nameTextField.setText(name);
+        addressTextField.setText(address);
+        phoneTextfield.setText(phone);
+        if (sex.equals("male")) {
+            maleRadioBtn.setSelected(true);
+        } else {
+            femaleRadiobtn.setSelected(true);
+        }
+
     }//GEN-LAST:event_jTableMouseClicked
 
     private void searchTextfeildMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchTextfeildMouseClicked
         // TODO add your handling code here:
-        model=(DefaultTableModel) jTable.getModel();
-        searchTextfeild.getDocument().addDocumentListener(new DocumentListener(){
+        model = (DefaultTableModel) jTable.getModel();
+        searchTextfeild.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
                 filterTable();
@@ -909,76 +894,76 @@ public class ReaderForm extends javax.swing.JFrame {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                                filterTable();
+                filterTable();
 
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                                filterTable();
+                filterTable();
 
             }
-            
-            public void filterTable(){
-                String text= searchTextfeild.getText();
-                 sorter=new TableRowSorter<>(model);
-                 jTable.setRowSorter(sorter);
-                if(text.trim().length()==0){
+
+            public void filterTable() {
+                String text = searchTextfeild.getText();
+                sorter = new TableRowSorter<>(model);
+                jTable.setRowSorter(sorter);
+                if (text.trim().length() == 0) {
                     sorter.setRowFilter(null);
-                }
-                else
+                } else {
                     sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                }
             }
-      
+
         });
-             tablelistener();  
-     
+        tablelistener();
+
     }//GEN-LAST:event_searchTextfeildMouseClicked
 
     private void newBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newBtnMouseEntered
         // TODO add your handling code here:
-        newBtn.setBackground(new Color(153,255,153));
+        newBtn.setBackground(new Color(153, 255, 153));
     }//GEN-LAST:event_newBtnMouseEntered
 
     private void newBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newBtnMouseExited
         // TODO add your handling code here:
-                newBtn.setBackground(new Color(204,204,204));
+        newBtn.setBackground(new Color(204, 204, 204));
 
     }//GEN-LAST:event_newBtnMouseExited
 
     private void insertBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_insertBtnMouseEntered
         // TODO add your handling code here:
-                insertBtn.setBackground(new Color(153,255,153));
+        insertBtn.setBackground(new Color(153, 255, 153));
 
     }//GEN-LAST:event_insertBtnMouseEntered
 
     private void insertBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_insertBtnMouseExited
         // TODO add your handling code here:
-                insertBtn.setBackground(new Color(204,204,204));
+        insertBtn.setBackground(new Color(204, 204, 204));
 
     }//GEN-LAST:event_insertBtnMouseExited
 
     private void deleteBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteBtnMouseExited
         // TODO add your handling code here:
-                deleteBtn.setBackground(new Color(204,204,204));
+        deleteBtn.setBackground(new Color(204, 204, 204));
 
     }//GEN-LAST:event_deleteBtnMouseExited
 
     private void deleteBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteBtnMouseEntered
         // TODO add your handling code here:
-                        deleteBtn.setBackground(new Color(255,51,51));
+        deleteBtn.setBackground(new Color(255, 51, 51));
 
     }//GEN-LAST:event_deleteBtnMouseEntered
 
     private void updateBtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateBtnMouseEntered
         // TODO add your handling code here:
-                        updateBtn.setBackground(new Color(255,255,204));
+        updateBtn.setBackground(new Color(255, 255, 204));
 
     }//GEN-LAST:event_updateBtnMouseEntered
 
     private void updateBtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateBtnMouseExited
         // TODO add your handling code here:
-                updateBtn.setBackground(new Color(204,204,204));
+        updateBtn.setBackground(new Color(204, 204, 204));
 
     }//GEN-LAST:event_updateBtnMouseExited
 
