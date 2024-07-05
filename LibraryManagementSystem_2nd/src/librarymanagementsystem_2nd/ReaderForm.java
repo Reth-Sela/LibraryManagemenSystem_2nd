@@ -836,15 +836,15 @@ public class ReaderForm extends javax.swing.JFrame {
 
             model = (DefaultTableModel) jTable.getModel();
 
-            String query = "INSERT INTO tbReader(readerName,sex,Address,phoneNumber)VALUES(?,?,?,?)";
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, readerName);
-            preparedStatement.setString(2, sex);
-            preparedStatement.setString(3, address);
-            preparedStatement.setString(4, phoneNumber);
-            int inserted = preparedStatement.executeUpdate();
+            String query = "{call spInsertAutoIncreasement(?,?,?,?)}";
+            CallableStatement callableStatement = connection.prepareCall(query);
+            callableStatement.setString(1, readerName);
+            callableStatement.setString(2, sex);
+            callableStatement.setString(3, address);
+            callableStatement.setString(4, phoneNumber);
+            int inserted = callableStatement.executeUpdate();
             // if insert successfully
-            if (inserted > 0) {
+            if (inserted == -1 ) {
                 int lastID = (int) jTable.getValueAt(jTable.getRowCount() - 1, 0);
                 lastID += 1;
                 System.out.print(lastID);
