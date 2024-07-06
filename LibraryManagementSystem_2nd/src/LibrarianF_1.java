@@ -26,9 +26,11 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.event.ListSelectionEvent;
 
-
-
-public final class LibrarianF extends javax.swing.JFrame {
+/**
+ *
+ * @author User
+ */
+public final class LibrarianF_1 extends javax.swing.JFrame {
 
     String sex;
     String fileName = null;
@@ -102,7 +104,7 @@ public final class LibrarianF extends javax.swing.JFrame {
 
     
     
-    public LibrarianF() {
+    public LibrarianF_1() {
         
         initComponents();
         show_Librarian(displayList);

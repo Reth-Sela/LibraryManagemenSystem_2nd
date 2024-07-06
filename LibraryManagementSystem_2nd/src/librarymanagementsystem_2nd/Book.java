@@ -5,7 +5,6 @@
 package librarymanagementsystem_2nd;
 
 import java.awt.Color;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,8 +37,7 @@ public class Book extends javax.swing.JFrame {
     DefaultTableModel model;
     TableRowSorter<DefaultTableModel> sorter;
     Border originalBorder;
-    Border redBorder = BorderFactory.createLineBorder(Color.RED);
-    CallableStatement callable;
+        Border redBorder = BorderFactory.createLineBorder(Color.RED);
 
 
     //add table listener
@@ -52,18 +50,18 @@ public class Book extends javax.swing.JFrame {
                 int selectedId = (int) model.getValueAt(modelRow, 0); // Assuming the ID is in the first column
                 System.out.println("Selected ID: " + selectedId);
                 
-               String  query ="{call spGetBookByID(?)}";
+               String  query ="select * from tbBook where bookID=?";
                
                 try {
                     connection =DriverManager.getConnection(url , username ,password);
-                    callable=connection.prepareCall(query);
-                    callable.setInt(1,selectedId);
+                    preparedStatement=connection.prepareStatement(query);
+                    preparedStatement.setInt(1,selectedId);
                     int getID=0;
                     String getTitle="";
                     String getAutor="";
                     String getCategory="";
                     int qty=0;
-                    resultSet=callable.executeQuery();
+                    resultSet=preparedStatement.executeQuery();
                     while(resultSet.next()){
                         getID=resultSet.getInt(1);
                          getTitle=resultSet.getString(2);
@@ -104,7 +102,7 @@ public class Book extends javax.swing.JFrame {
             connection=DriverManager.getConnection(url,username,password);
             model=(DefaultTableModel) bookTable.getModel();
             statement =connection.createStatement();
-            String query="select * from vwGetAllBook order by bookID ";
+            String query="select * from tbBook order by bookID";
             resultSet=statement.executeQuery(query);
             while(resultSet.next()){
               int id=resultSet.getInt("bookID");
@@ -674,19 +672,18 @@ public class Book extends javax.swing.JFrame {
             int qty=Integer.parseInt(stringQty);
             
             
-            String query="{call spUpdateBookByID(?,?,?,?,?)}";
-
+            
+            String query ="Update tbBook set bookTitle=? ,category=? ,autor=? ,bookQty=? where bookID=?";
             try {
                 connection=DriverManager.getConnection(url,username, password);
-                callable=connection.prepareCall(query);
-                 callable.setInt(1,updateID);
-                callable.setString(2, title);
-                callable.setString(3,category);
-                callable.setString(4,autor);
-                callable.setInt(5,qty);
-               
-                int updateResult=callable.executeUpdate();
-                if (updateResult== -1){
+                preparedStatement=connection.prepareStatement(query);
+                preparedStatement.setString(1, title);
+                preparedStatement.setString(2,category);
+                preparedStatement.setString(3,autor);
+                preparedStatement.setInt(4,qty);
+                preparedStatement.setInt(5,updateID);
+                int updateResult=preparedStatement.executeUpdate();
+                if (updateResult>0){
                     
                     model.setValueAt(title,bookTable.getSelectedRow(), 1);
                     model.setValueAt(category,bookTable.getSelectedRow(), 2);
@@ -755,19 +752,20 @@ public class Book extends javax.swing.JFrame {
     
      System.out.println(title+autor+category+qty);
      
-     String query ="{call spInsertBook(?,?,?,?)}";
+     String query ="Insert into tbBook(bookTitle,autor,category,bookQty)"
+             + "values(?,?,?,?)";
     
         try {
             connection= DriverManager.getConnection(url,username,password);
-            callable=connection.prepareCall(query);
-            callable.setString(1, title);
-            callable.setString(2, autor);
-            callable.setString(3, category);
-            callable.setInt(4, qty);
+            preparedStatement=connection.prepareStatement(query);
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, autor);
+            preparedStatement.setString(3, category);
+            preparedStatement.setInt(4, qty);
             
-             int inserted=callable.executeUpdate();
+             int inserted=preparedStatement.executeUpdate();
              // if insert successfully
-               if(inserted==-1){
+               if(inserted>0){
                   int lastID=(int)bookTable.getValueAt(bookTable.getRowCount()-1, 0);
                   lastID+=1;
                   System.out.print(lastID);
@@ -866,14 +864,14 @@ public class Book extends javax.swing.JFrame {
         }
     } else {
             int removeID = (int) bookTable.getValueAt(selectRow, 0);
-            String query= "{call spDeleteBookByID(?)}";
+            String query= "Delete from tbBook where bookID=?";
             
             try {
                 connection =DriverManager.getConnection(url,username, password);
-                callable=connection.prepareCall(query);
-                callable.setInt(1, removeID);
-                int resultRemove= callable.executeUpdate();
-                if (resultRemove == -1){
+                preparedStatement=connection.prepareStatement(query);
+                preparedStatement.setInt(1, removeID);
+                int resultRemove= preparedStatement.executeUpdate();
+                if (resultRemove >0){
                     model.removeRow(selectRow);
                     JOptionPane.showMessageDialog(rootPane, "Deleted");
                 }
