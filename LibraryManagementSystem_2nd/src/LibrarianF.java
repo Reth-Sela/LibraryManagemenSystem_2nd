@@ -15,6 +15,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -29,6 +31,13 @@ import javax.swing.event.ListSelectionEvent;
 
 
 public final class LibrarianF extends javax.swing.JFrame {
+    String url = "jdbc:sqlserver://LAPTOP-VBAMK3DF\\SQLEXPRESS;databaseName=librarySM;intergratedSecurity=true;encrypt=true;trustServerCertificate=true";
+    String username = "sa";
+    String password = "02062004";
+    Connection connection;
+    
+    static String newUsername = "sa";
+    static String newPassword = "02062004";
 
     String sex;
     String fileName = null;
@@ -38,12 +47,13 @@ public final class LibrarianF extends javax.swing.JFrame {
     
         public ArrayList<Librarian> librarianList() {
         ArrayList<Librarian> librarianList = new ArrayList<> ();
-        String url = "jdbc:sqlserver://SOTHEARITH;user=nani;password=50th34rith;Database=LibDB;encrypt=true;trustServerCertificate=true";
         try{
+           Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+           System.out.println("have driver");
             
-            try (Connection connection = DriverManager.getConnection(url)) {
+            try (Connection connection = DriverManager.getConnection(url,username,password)) {
             
-            String query1 = "SELECT LibrarianID, FirstName, LastName, Sex, Street, HouseNo, City , BirthDate, PhoneNumber, Salary, HiredDate, Image FROM testTb";
+            String query1 = "SELECT LibrarianID, FirstName, LastName, Sex, Street, HouseNo, City , BirthDate, PhoneNumber, Salary, HiredDate, Image FROM tbLibrarian";
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(query1);
             
@@ -70,6 +80,8 @@ public final class LibrarianF extends javax.swing.JFrame {
         }catch(SQLException e) {
             System.out.println("An error occured while connecting to the database.");
             e.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LibrarianF.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return librarianList;
@@ -443,10 +455,9 @@ public final class LibrarianF extends javax.swing.JFrame {
         
         
         
-        String url = "jdbc:sqlserver://SOTHEARITH;user=nani;password=50th34rith;Database=LibDB;encrypt=true;trustServerCertificate=true";
-        try(Connection connection = DriverManager.getConnection(url)) {
+        try(Connection connection = DriverManager.getConnection(url,username,password)) {
             // Check if the record already exists
-            String checkQuery = "SELECT COUNT(*) FROM testTb WHERE FirstName = ? AND LastName = ? AND BirthDate = ?";
+            String checkQuery = "SELECT COUNT(*) FROM tbLibrarian WHERE firstName = ? AND lastName = ? AND birthDate = ?";
             try (PreparedStatement checkPst = connection.prepareStatement(checkQuery)) {
                 checkPst.setString(1, firstName.getText());
                 checkPst.setString(2, lastName.getText());
@@ -458,7 +469,7 @@ public final class LibrarianF extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Record already exists.");
                 } else {
                     // If the record does not exist, insert the new record
-                    String insertQuery = "INSERT INTO testTb(FirstName, LastName, Sex, BirthDate, HouseNo, Street, City, PhoneNumber, Salary, HiredDate, Image ) VALUES(?,?,?,?,?,?,?,?,?,?, ?)";
+                    String insertQuery = "INSERT INTO tbLibrarian(FirstName, LastName, Sex, BirthDate, HouseNo, Street, City, PhoneNumber, Salary, HiredDate, Image ) VALUES(?,?,?,?,?,?,?,?,?,?, ?)";
                     try (PreparedStatement pst = connection.prepareStatement(insertQuery)) {
                         pst.setString(1, firstName.getText());
                         pst.setString(2, lastName.getText());
@@ -536,7 +547,6 @@ public final class LibrarianF extends javax.swing.JFrame {
         
         
         
-        String url = "jdbc:sqlserver://SOTHEARITH;user=nani;password=50th34rith;Database=LibDB;encrypt=true;trustServerCertificate=true";
         String tmp = displayList.getSelectedValue();
 
         if (tmp == null || !tmp.contains(" ")) {
@@ -589,7 +599,7 @@ public final class LibrarianF extends javax.swing.JFrame {
         }
 
         try (Connection connection = DriverManager.getConnection(url)) {
-            String query = "UPDATE testTb SET FirstName=?, LastName=?, Sex=?, HouseNo=?, Street=?, City=?, BirthDate=?, PhoneNumber=?, Salary=?, HiredDate=?, Image=? WHERE FirstName=? AND LastName=?";
+            String query = "UPDATE tbLibrarian SET FirstName=?, LastName=?, Sex=?, HouseNo=?, Street=?, City=?, BirthDate=?, PhoneNumber=?, Salary=?, HiredDate=?, Image=? WHERE FirstName=? AND LastName=?";
             try (PreparedStatement pst = connection.prepareStatement(query)) {
                 pst.setString(1, fName);
                 pst.setString(2, lName);
@@ -618,7 +628,7 @@ public final class LibrarianF extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Database connection failed.");
+            JOptionPane.showMessageDialog(null, "Record must be select to update");
             e.printStackTrace();
         }
         
@@ -630,7 +640,6 @@ public final class LibrarianF extends javax.swing.JFrame {
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        String url = "jdbc:sqlserver://SOTHEARITH;user=nani;password=50th34rith;Database=LibDB;encrypt=true;trustServerCertificate=true";
     String tmp = displayList.getSelectedValue();
     if (tmp == null) {
         JOptionPane.showMessageDialog(null, "Please select a record to delete.");
@@ -650,8 +659,8 @@ public final class LibrarianF extends javax.swing.JFrame {
     int confirmation = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 
     if (confirmation == JOptionPane.YES_OPTION) {
-        try (Connection connection = DriverManager.getConnection(url)) {
-            String query = "DELETE FROM testTb WHERE FirstName = ? AND LastName = ?";
+        try (Connection connection = DriverManager.getConnection(url,username,password)) {
+            String query = "DELETE FROM tbLibrarian WHERE FirstName = ? AND LastName = ?";
             try (PreparedStatement pst = connection.prepareStatement(query)) {
                 pst.setString(1, FirstName);
                 pst.setString(2, LastName);
@@ -677,7 +686,6 @@ public final class LibrarianF extends javax.swing.JFrame {
             
 
         
-        String url = "jdbc:sqlserver://SOTHEARITH;user=nani;password=50th34rith;Database=LibDB;encrypt=true;trustServerCertificate=true";
         String tmp = displayList.getSelectedValue();
 
         if (tmp == null || !tmp.contains(" ")) {
@@ -694,8 +702,8 @@ public final class LibrarianF extends javax.swing.JFrame {
         String firstNameSelected = nameParts[0];
         String lastNameSelected = nameParts[1];
 
-        try (Connection connection = DriverManager.getConnection(url)) {
-            String query = "SELECT * FROM testTb WHERE FirstName=? AND LastName=?";
+        try (Connection connection = DriverManager.getConnection(url,username,password)) {
+            String query = "SELECT * FROM tbLibrarian WHERE FirstName=? AND LastName=?";
             try (PreparedStatement pst = connection.prepareStatement(query)) {
                 pst.setString(1, firstNameSelected);
                 pst.setString(2, lastNameSelected);
@@ -751,12 +759,11 @@ public final class LibrarianF extends javax.swing.JFrame {
     }//GEN-LAST:event_displayListMouseClicked
 
     private void searchInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchInputKeyReleased
-        String url = "jdbc:sqlserver://SOTHEARITH;user=nani;password=50th34rith;Database=LibDB;encrypt=true;trustServerCertificate=true";
         String searchText = searchInput.getText();
         String wildcardSearchText = "%" + searchText + "%";
 
-    try (Connection connection = DriverManager.getConnection(url)) {
-        String sql = "SELECT * FROM testTb WHERE FirstName LIKE ? OR LastName LIKE ?";
+    try (Connection connection = DriverManager.getConnection(url,username,password)) {
+        String sql = "SELECT * FROM tbLibrarian WHERE FirstName LIKE ? OR LastName LIKE ?";
         PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, wildcardSearchText);
         pst.setString(2, wildcardSearchText);
@@ -783,17 +790,7 @@ public final class LibrarianF extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
         
-        String url = "jdbc:sqlserver://SOTHEARITH;user=nani;password=50th34rith;Database=LibDB;encrypt=true;trustServerCertificate=true";
-        try{
-            
-            try (Connection connection = DriverManager.getConnection(url)) {
-            
-            System.out.println("Connection established.");
-            }
-        }catch(SQLException e) {
-            System.out.println("An error occured while connecting to the database.");
-            e.printStackTrace();
-        }
+      
         
         
         
