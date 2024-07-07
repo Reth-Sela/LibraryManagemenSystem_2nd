@@ -1,6 +1,12 @@
 
 
 
+
+
+
+
+
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -43,9 +49,11 @@ public final class LibrarianF extends javax.swing.JFrame {
     String fileName = null;
     byte[] person_img = null;
     
-    
-    
-        public ArrayList<Librarian> librarianList() {
+    /**
+     *
+     * @return
+     */
+    public ArrayList<Librarian> librarianList() {
         ArrayList<Librarian> librarianList = new ArrayList<> ();
         try{
            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
