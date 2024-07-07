@@ -220,7 +220,9 @@ public class MainUI extends javax.swing.JFrame {
 
     private void LibrarianItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LibrarianItemActionPerformed
         // TODO add your handling code here:
-      
+      this.dispose();
+      LibrarianF librarian=new LibrarianF();
+      librarian.setVisible(true);
        
        
     }//GEN-LAST:event_LibrarianItemActionPerformed
