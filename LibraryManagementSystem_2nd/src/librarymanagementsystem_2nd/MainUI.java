@@ -1,5 +1,7 @@
 package librarymanagementsystem_2nd;
 
+import Payment.FrmPayment;
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -177,6 +179,11 @@ public class MainUI extends javax.swing.JFrame {
         jMenu3.add(InvoiceItem);
 
         PaymentItem.setText("PAYMENT");
+        PaymentItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PaymentItemActionPerformed(evt);
+            }
+        });
         jMenu3.add(PaymentItem);
 
         jMenuBar1.add(jMenu3);
@@ -233,6 +240,13 @@ public class MainUI extends javax.swing.JFrame {
         Book book=new Book();
         book.setVisible(true);
     }//GEN-LAST:event_BookItemActionPerformed
+
+    private void PaymentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PaymentItemActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        FrmPayment payment=new FrmPayment();
+        payment.setVisible(true);
+    }//GEN-LAST:event_PaymentItemActionPerformed
 
     /**
      * @param args the command line arguments
