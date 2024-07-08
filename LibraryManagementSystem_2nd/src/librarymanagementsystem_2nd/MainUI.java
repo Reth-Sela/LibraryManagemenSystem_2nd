@@ -176,6 +176,11 @@ public class MainUI extends javax.swing.JFrame {
         jMenu3.add(BorrowExpireItem);
 
         InvoiceItem.setText("INVOICE");
+        InvoiceItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                InvoiceItemActionPerformed(evt);
+            }
+        });
         jMenu3.add(InvoiceItem);
 
         PaymentItem.setText("PAYMENT");
@@ -247,6 +252,13 @@ public class MainUI extends javax.swing.JFrame {
         FrmPayment payment=new FrmPayment();
         payment.setVisible(true);
     }//GEN-LAST:event_PaymentItemActionPerformed
+
+    private void InvoiceItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InvoiceItemActionPerformed
+        // TODO add your handling code here:
+        this .dispose();
+      INVOICE_Form invoice =new INVOICE_Form();
+      invoice .setVisible(true);
+    }//GEN-LAST:event_InvoiceItemActionPerformed
 
     /**
      * @param args the command line arguments

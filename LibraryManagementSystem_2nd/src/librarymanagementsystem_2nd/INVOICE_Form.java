@@ -144,12 +144,12 @@ public class INVOICE_Form extends JFrame {
         public void connectToDatabase() {
             try {
                 // Change these variables according to your database setup
-                String url = "jdbc:sqlserver://BOTHSTARK:3334;databaseName=MYDB;encrypt=true;trustServerCertificate=true";
-                String user = "sa";
-                String password = "222426";
+                String url = "jdbc:sqlserver://LAPTOP-VBAMK3DF\\SQLEXPRESS;databaseName=librarySM;intergratedSecurity=true;encrypt=true;trustServerCertificate=true";
+                String username = "sa";
+                String password = "02062004";
 
-                connection = DriverManager.getConnection(url, user, password);
-                JOptionPane.showMessageDialog(this, "Connected to database successfully");
+                connection = DriverManager.getConnection(url, username, password);
+                //JOptionPane.showMessageDialog(this, "Connected to database successfully");
             } catch (SQLException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Failed to connect to database");
@@ -158,7 +158,7 @@ public class INVOICE_Form extends JFrame {
 
     private void fetchInvoiceData(String invoiceNo) {
         try {
-            String query = "SELECT * FROM tblInvoice WHERE InvoiceID = ?";
+            String query = "SELECT * FROM tbInvoice WHERE InvoiceID = ?";
 
             statement = connection.prepareStatement(query);
             statement.setString(1, invoiceNo);
@@ -167,7 +167,7 @@ public class INVOICE_Form extends JFrame {
             if (resultSet.next()) {
                 // Retrieve data using column names
                 Invoicetf.setText(resultSet.getString("InvoiceID"));
-                Readertf.setText(resultSet.getString("ReaderID"));
+                Readertf.setText(resultSet.getString("readerID"));
                 // Fetch additional columns
                 try {
                     Date invoiceDate = resultSet.getDate("InvoiceDate");
@@ -209,13 +209,13 @@ public class INVOICE_Form extends JFrame {
 
     private void fetchReaderName(int readerID) {
         try {
-            String query = "SELECT FirstName, LastName FROM tblReader WHERE ReaderID = ?";
+            String query = "SELECT readerName FROM tbReader WHERE ReaderID = ?";
             statement = connection.prepareStatement(query);
             statement.setInt(1, readerID);
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                Readertf.setText(resultSet.getString("FirstName") + " " + resultSet.getString("LastName"));
+                Readertf.setText(resultSet.getString("readerName"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
